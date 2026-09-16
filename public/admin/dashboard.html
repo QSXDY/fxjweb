@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>工作台 · 福鲜家后台</title>
+<meta name="csrf" content="{{CSRF}}">
+<link rel="stylesheet" href="/admin/assets/admin.css">
+</head>
+<body class="admin-body">
+  <aside class="sidebar">
+    <div class="side-brand">
+      <span class="side-logo">福</span>
+      <div class="side-text"><strong>福鲜家后台</strong><em>内容管理系统</em></div>
+    </div>
+    <nav class="side-nav">
+      <a href="/admin" data-nav="dash">
+        <svg class="nav-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7.5" height="7.5" rx="1.5"/><rect x="13.5" y="3" width="7.5" height="7.5" rx="1.5"/><rect x="3" y="13.5" width="7.5" height="7.5" rx="1.5"/><rect x="13.5" y="13.5" width="7.5" height="7.5" rx="1.5"/></svg>
+        <span>工作台</span>
+      </a>
+      <a href="/admin/pages" data-nav="pages">
+        <svg class="nav-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 4h9l5 5v11H5z"/><path d="M14 4v5h5"/><path d="M8.5 13h7M8.5 16.5h7"/></svg>
+        <span>页面管理</span>
+      </a>
+      <a href="/admin/entries" data-nav="entries">
+        <svg class="nav-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 6h16M4 12h16M4 18h10"/></svg>
+        <span>条目管理</span>
+      </a>
+      <a href="/admin/settings" data-nav="settings">
+        <svg class="nav-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.87l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.7 1.7 0 0 0-1.87-.34 1.7 1.7 0 0 0-1 1.55V21a2 2 0 1 1-4 0v-.09a1.7 1.7 0 0 0-1-1.55 1.7 1.7 0 0 0-1.87.34l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.7 1.7 0 0 0 .34-1.87 1.7 1.7 0 0 0-1.55-1H3a2 2 0 1 1 0-4h.09a1.7 1.7 0 0 0 1.55-1 1.7 1.7 0 0 0-.34-1.87l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.7 1.7 0 0 0 1.87.34h.09a1.7 1.7 0 0 0 1-1.55V3a2 2 0 1 1 4 0v.09a1.7 1.7 0 0 0 1 1.55 1.7 1.7 0 0 0 1.87-.34l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.7 1.7 0 0 0-.34 1.87v.09a1.7 1.7 0 0 0 1.55 1H21a2 2 0 1 1 0 4h-.09a1.7 1.7 0 0 0-1.55 1z"/></svg>
+        <span>站点设置</span>
+      </a>
+    </nav>
+    <div class="side-foot">
+      <a href="/" target="_blank" rel="noopener">查看前台网站</a>
+      <button id="logoutBtn">退出登录</button>
+    </div>
+  </aside>
+
+  <div class="main">
+    <header class="topbar">
+      <h1>工作台</h1>
+      <div class="top-actions">
+        <a class="btn btn-primary" href="/admin/pages">管理页面</a>
+        <a class="btn" href="/" target="_blank" rel="noopener">打开网站</a>
+      </div>
+    </header>
+
+    <div class="content">
+      <div class="stat-grid">
+        <div class="stat-card"><div class="num" id="statPages">–</div><div class="lbl">页面数量</div></div>
+        <div class="stat-card fresh"><div class="num" id="statMenus">–</div><div class="lbl">每日菜单条数</div></div>
+        <div class="stat-card gold"><div class="num" id="statReviews">–</div><div class="lbl">客户评价条数</div></div>
+      </div>
+
+      <div class="notice">
+        <strong>常用操作速览：</strong><br>
+        1. 修改首页/页面文字、图片：<a href="/admin/pages">页面管理</a> → 点「编辑」→ 左侧拖拽区块、点选文字直接在画布上修改 → 右上角「保存」。<br>
+        2. 每日菜单 / 客户评价：<a href="/admin/entries">条目管理</a> 里增删改，页面上已放置对应列表的地方会自动更新。<br>
+        3. 电话、微信号、导航、价格、套餐详情：<a href="/admin/settings">站点设置</a> 里统一修改。
+      </div>
+
+      <div class="card">
+        <h2>后台使用步骤</h2>
+        <p class="card-desc">第一次使用，按下面顺序走一遍即可掌握。</p>
+        <div class="steps">
+          <div class="step"><span class="no">1</span><h4>修改网站信息</h4><p>先到「站点设置」确认电话、微信、地址、导航、价格是否正确。</p></div>
+          <div class="step"><span class="no">2</span><h4>编辑首页内容</h4><p>「页面管理」→ 编辑首页，像做文档一样改文字、换图片、调顺序。</p></div>
+          <div class="step"><span class="no">3</span><h4>维护菜单与评价</h4><p>「条目管理」里添加每日菜单、客户评价，前台自动展示。</p></div>
+          <div class="step"><span class="no">4</span><h4>新建页面</h4><p>需要新栏目（如「每日菜单」页）时，「页面管理」→ 新建页面 → 拖拽搭建。</p></div>
+          <div class="step"><span class="no">5</span><h4>发布查看</h4><p>每次「保存」即生效，打开前台网站刷新即可看到最新内容。</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script src="/admin/assets/admin.js"></script>
+<script>
+(function () {
+  "use strict";
+  var A = window.Admin;
+  A.setActiveNav("dash");
+  A.get("/admin/api/counts").then(function (d) {
+    document.getElementById("statPages").textContent = d.pages;
+    document.getElementById("statMenus").textContent = d.menus;
+    document.getElementById("statReviews").textContent = d.reviews;
+  }).catch(A.toastErr);
+})();
+</script>
+</body>
+</html>

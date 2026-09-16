@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>编辑页面 · 福鲜家后台</title>
+<meta name="csrf" content="{{CSRF}}">
+<link rel="stylesheet" href="/admin/assets/vendor/grapes.min.css">
+<link rel="stylesheet" href="/admin/assets/admin.css">
+</head>
+<body class="admin-body editor-body">
+  <header class="editor-toolbar">
+    <a class="btn" href="/admin/pages">← 返回</a>
+    <div class="tb-title">
+      <input class="input" id="pageTitle" placeholder="页面标题" style="max-width:340px;">
+    </div>
+    <label style="display:flex;align-items:center;gap:6px;font-size:13.5px;color:var(--text-sub);white-space:nowrap;">
+      <input type="checkbox" id="pagePublished" checked> 发布
+    </label>
+    <label class="tb-device" style="display:flex;align-items:center;gap:6px;font-size:13.5px;color:var(--text-sub);white-space:nowrap;">
+      设备
+      <select id="deviceSelect" class="input" style="min-width:120px;"></select>
+    </label>
+    <a class="btn" id="pagePreview" href="{{PAGE_URL}}" target="_blank" rel="noopener">预览</a>
+    <button class="btn" id="pageUpload">上传图片</button>
+    <button class="btn btn-gold" id="pageSave">保存</button>
+  </header>
+
+  <div class="editor-shell">
+    <div id="gjs"></div>
+  </div>
+
+  <link rel="stylesheet" href="/admin/assets/vendor/codemirror/codemirror.min.css">
+  <link rel="stylesheet" href="/admin/assets/vendor/codemirror/theme/hopscotch.min.css">
+  <script src="/admin/assets/vendor/codemirror/codemirror.min.js"></script>
+  <script src="/admin/assets/vendor/codemirror/mode/xml/xml.min.js"></script>
+  <script src="/admin/assets/vendor/codemirror/mode/css/css.min.js"></script>
+  <script src="/admin/assets/vendor/codemirror/mode/javascript/javascript.min.js"></script>
+  <script src="/admin/assets/vendor/codemirror/mode/htmlmixed/htmlmixed.min.js"></script>
+  <script src="/admin/assets/vendor/grapes.min.js"></script>
+  <script src="/admin/assets/vendor/grapes-locale-zh.js"></script>
+  <script>window.__PAGE__ = {{PAGE_JSON}};</script>
+  <script src="/admin/assets/editor.js"></script>
+</body>
+</html>
