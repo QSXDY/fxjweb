@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+{{FAVICON_TAG}}
+<title>条目管理 · 福鲜家后台</title>
+<meta name="csrf" content="{{CSRF}}">
+<link rel="stylesheet" href="/admin/assets/admin.css">
+</head>
+<body class="admin-body">
+  <aside class="sidebar">
+    <div class="side-brand">
+      {{SIDE_LOGO}}
+      <div class="side-text"><strong>福鲜家后台</strong><em>内容管理系统</em></div>
+    </div>
+    <nav class="side-nav">
+      <a href="/admin" data-nav="dash"><svg class="nav-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7.5" height="7.5" rx="1.5"/><rect x="13.5" y="3" width="7.5" height="7.5" rx="1.5"/><rect x="3" y="13.5" width="7.5" height="7.5" rx="1.5"/><rect x="13.5" y="13.5" width="7.5" height="7.5" rx="1.5"/></svg><span>工作台</span></a>
+      <a href="/admin/pages" data-nav="pages"><svg class="nav-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 4h9l5 5v11H5z"/><path d="M14 4v5h5"/><path d="M8.5 13h7M8.5 16.5h7"/></svg><span>页面管理</span></a>
+      <a href="/admin/entries" data-nav="entries"><svg class="nav-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 6h16M4 12h16M4 18h10"/></svg><span>条目管理</span></a>
+      <a href="/admin/settings" data-nav="settings"><svg class="nav-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.87l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.7 1.7 0 0 0-1.87-.34 1.7 1.7 0 0 0-1 1.55V21a2 2 0 1 1-4 0v-.09a1.7 1.7 0 0 0-1-1.55 1.7 1.7 0 0 0-1.87.34l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.7 1.7 0 0 0 .34-1.87 1.7 1.7 0 0 0-1.55-1H3a2 2 0 1 1 0-4h.09a1.7 1.7 0 0 0 1.55-1 1.7 1.7 0 0 0-.34-1.87l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.7 1.7 0 0 0 1.87.34h.09a1.7 1.7 0 0 0 1-1.55V3a2 2 0 1 1 4 0v.09a1.7 1.7 0 0 0 1 1.55 1.7 1.7 0 0 0 1.87-.34l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.7 1.7 0 0 0-.34 1.87v.09a1.7 1.7 0 0 0 1.55 1H21a2 2 0 1 1 0 4h-.09a1.7 1.7 0 0 0-1.55 1z"/></svg><span>站点设置</span></a>
+    </nav>
+    <div class="side-foot">
+      <a href="/" target="_blank" rel="noopener">查看前台网站</a>
+      <button id="logoutBtn">退出登录</button>
+    </div>
+  </aside>
+
+  <div class="main">
+    <header class="topbar">
+      <h1>条目管理</h1>
+    </header>
+
+    <div class="content">
+      <div class="notice">
+        这里维护的「每日菜单」和「客户评价」，会**自动展示**在页面上放置了对应列表区块的位置（编辑页面时从左侧拖入「每日菜单列表」「客户评价列表」区块即可）。<br>
+        条目排序：上移 / 下移调整显示顺序；「显示」开关控制前台是否展示。
+      </div>
+
+      <div class="tabs">
+        <button class="tab is-active" data-tab="menus">每日菜单</button>
+        <button class="tab" data-tab="reviews">客户评价</button>
+      </div>
+
+      <!-- 每日菜单 -->
+      <div class="tab-panel is-active" id="panel-menus">
+        <div class="card">
+          <h2 id="menuFormTitle">新增菜单条目</h2>
+          <p class="card-desc">填写日期、餐次与菜品内容，前台列表自动按顺序展示。</p>
+          <form id="menuForm" class="form-grid">
+            <div class="field">
+              <label for="mDate">日期</label>
+              <input class="input" id="mDate" placeholder="如：9月17日 · 周四">
+            </div>
+            <div class="field">
+              <label for="mMeal">餐次</label>
+              <select class="select" id="mMeal">
+                <option value="">（不指定）</option>
+                <option>早餐</option>
+                <option>上午加餐</option>
+                <option>午餐</option>
+                <option>下午加餐</option>
+                <option>晚餐</option>
+                <option>夜宵</option>
+                <option>全天</option>
+              </select>
+            </div>
+            <div class="field full">
+              <label for="mItems">菜品内容（每行一道菜）</label>
+              <textarea class="textarea" id="mItems" rows="4" placeholder="示例：&#10;小米南瓜粥&#10;时蔬蒸蛋&#10;冬瓜排骨汤"></textarea>
+            </div>
+            <div class="field full">
+              <label><input type="checkbox" id="mPublished" checked> 在前台显示</label>
+            </div>
+            <div class="field full">
+              <button class="btn btn-primary" type="submit" id="menuSubmit">新增</button>
+              <button class="btn" type="button" id="menuCancel" style="display:none;">取消编辑</button>
+            </div>
+          </form>
+        </div>
+
+        <div class="card">
+          <div class="table-wrap">
+            <table class="list-table">
+              <thead>
+                <tr><th style="width:60px;">顺序</th><th>日期</th><th>餐次</th><th>菜品内容</th><th>状态</th><th style="width:200px;">操作</th></tr>
+              </thead>
+              <tbody id="menuRows"></tbody>
+            </table>
+            <div class="empty-hint" id="menuEmpty" style="display:none;">还没有菜单条目，先在上面添加一条吧</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 客户评价 -->
+      <div class="tab-panel" id="panel-reviews">
+        <div class="card">
+          <h2 id="reviewFormTitle">新增评价</h2>
+          <p class="card-desc">客户评价会以卡片形式展示在评价列表区块中。</p>
+          <form id="reviewForm" class="form-grid">
+            <div class="field">
+              <label for="rName">客户姓名</label>
+              <input class="input" id="rName" placeholder="如：李女士">
+            </div>
+            <div class="field">
+              <label for="rRating">评分</label>
+              <select class="select" id="rRating">
+                <option value="5">★★★★★ 5 星</option>
+                <option value="4">★★★★ 4 星</option>
+                <option value="3">★★★ 3 星</option>
+                <option value="2">★★ 2 星</option>
+                <option value="1">★ 1 星</option>
+              </select>
+            </div>
+            <div class="field full">
+              <label for="rContent">评价内容</label>
+              <textarea class="textarea" id="rContent" rows="4" placeholder="客户说了什么？"></textarea>
+            </div>
+            <div class="field">
+              <label for="rDate">日期（可选）</label>
+              <input class="input" id="rDate" placeholder="如：2026-09-17">
+            </div>
+            <div class="field">
+              <label><input type="checkbox" id="rPublished" checked> 在前台显示</label>
+            </div>
+            <div class="field full">
+              <button class="btn btn-primary" type="submit" id="reviewSubmit">新增</button>
+              <button class="btn" type="button" id="reviewCancel" style="display:none;">取消编辑</button>
+            </div>
+          </form>
+        </div>
+
+        <div class="card">
+          <div class="table-wrap">
+            <table class="list-table">
+              <thead>
+                <tr><th style="width:60px;">顺序</th><th>客户</th><th>评分</th><th>评价内容</th><th>日期</th><th>状态</th><th style="width:200px;">操作</th></tr>
+              </thead>
+              <tbody id="reviewRows"></tbody>
+            </table>
+            <div class="empty-hint" id="reviewEmpty" style="display:none;">还没有评价，先在上面添加一条吧</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script src="/admin/assets/admin.js"></script>
+<script>
+(function () {
+  "use strict";
+  var A = window.Admin;
+  A.setActiveNav("entries");
+
+  /* ---------- 标签切换 ---------- */
+  document.querySelectorAll(".tab").forEach(function (t) {
+    t.addEventListener("click", function () {
+      document.querySelectorAll(".tab").forEach(function (x) { x.classList.toggle("is-active", x === t); });
+      document.querySelectorAll(".tab-panel").forEach(function (p) { p.classList.remove("is-active"); });
+      document.getElementById("panel-" + t.getAttribute("data-tab")).classList.add("is-active");
+    });
+  });
+
+  /* ---------- 每日菜单 ---------- */
+  var editingMenu = null;
+
+  function menuRowsHtml(items) {
+    if (!items.length) {
+      document.getElementById("menuEmpty").style.display = "block";
+      return "";
+    }
+    document.getElementById("menuEmpty").style.display = "none";
+    return items.map(function (m, i) {
+      var preview = (m.items || "").split("\n").filter(Boolean).join(" / ");
+      return "<tr>" +
+        "<td>" + (i + 1) + "</td>" +
+        "<td><strong>" + A.escHtml(m.date || "") + "</strong></td>" +
+        "<td>" + A.escHtml(m.meal || "—") + "</td>" +
+        "<td>" + A.escHtml(preview.slice(0, 60) || "—") + "</td>" +
+        "<td><span class=\"badge " + (m.published ? "badge-on" : "badge-off") + "\">" + (m.published ? "显示" : "隐藏") + "</span></td>" +
+        "<td><div class=\"row-actions\">" +
+        "<button class=\"btn btn-sm\" data-move=\"" + m.id + "\" data-dir=\"-1\">上移</button>" +
+        "<button class=\"btn btn-sm\" data-move=\"" + m.id + "\" data-dir=\"1\">下移</button>" +
+        "<button class=\"btn btn-sm\" data-edit=\"" + m.id + "\">编辑</button>" +
+        "<button class=\"btn btn-sm\" data-toggle=\"" + m.id + "\">" + (m.published ? "隐藏" : "显示") + "</button>" +
+        "<button class=\"btn btn-danger btn-sm\" data-del=\"" + m.id + "\">删除</button>" +
+        "</div></td></tr>";
+    }).join("");
+  }
+
+  function loadMenus() {
+    return A.get("/admin/api/menus").then(function (d) {
+      document.getElementById("menuRows").innerHTML = menuRowsHtml(d.items);
+    });
+  }
+
+  function resetMenuForm() {
+    editingMenu = null;
+    document.getElementById("menuForm").reset();
+    document.getElementById("mPublished").checked = true;
+    document.getElementById("menuFormTitle").textContent = "新增菜单条目";
+    document.getElementById("menuSubmit").textContent = "新增";
+    document.getElementById("menuCancel").style.display = "none";
+  }
+
+  document.getElementById("menuForm").addEventListener("submit", function (e) {
+    e.preventDefault();
+    var body = {
+      date: document.getElementById("mDate").value,
+      meal: document.getElementById("mMeal").value,
+      items: document.getElementById("mItems").value,
+      published: document.getElementById("mPublished").checked
+    };
+    var req = editingMenu
+      ? A.post("/admin/api/menus/" + editingMenu + "/save", body)
+      : A.post("/admin/api/menus", body);
+    req.then(function () {
+      A.toastOk(editingMenu ? "已保存" : "已添加");
+      resetMenuForm();
+      loadMenus();
+    }).catch(A.toastErr);
+  });
+
+  document.getElementById("menuCancel").addEventListener("click", resetMenuForm);
+
+  document.getElementById("menuRows").addEventListener("click", function (e) {
+    var t = e.target;
+    var id = t.getAttribute("data-edit");
+    if (id) {
+      A.get("/admin/api/menus").then(function (d) {
+        var m = d.items.find(function (x) { return x.id === id; });
+        if (!m) return;
+        editingMenu = id;
+        document.getElementById("mDate").value = m.date || "";
+        document.getElementById("mMeal").value = m.meal || "";
+        document.getElementById("mItems").value = m.items || "";
+        document.getElementById("mPublished").checked = m.published !== false;
+        document.getElementById("menuFormTitle").textContent = "编辑菜单条目";
+        document.getElementById("menuSubmit").textContent = "保存修改";
+        document.getElementById("menuCancel").style.display = "inline-flex";
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }).catch(A.toastErr);
+      return;
+    }
+    var del = t.getAttribute("data-del");
+    if (del) {
+      if (!window.confirm("确定删除该条目吗？")) return;
+      A.post("/admin/api/menus/" + del + "/delete").then(function () { A.toastOk("已删除"); loadMenus(); }).catch(A.toastErr);
+      return;
+    }
+    var tg = t.getAttribute("data-toggle");
+    if (tg) {
+      A.get("/admin/api/menus").then(function (d) {
+        var m = d.items.find(function (x) { return x.id === tg; });
+        if (!m) return;
+        return A.post("/admin/api/menus/" + tg + "/save", {
+          date: m.date, meal: m.meal, items: m.items, published: m.published === false
+        });
+      }).then(function () { loadMenus(); }).catch(A.toastErr);
+      return;
+    }
+    var mv = t.getAttribute("data-move");
+    if (mv) {
+      A.post("/admin/api/menus/" + mv + "/move", { dir: Number(t.getAttribute("data-dir")) })
+        .then(function () { loadMenus(); }).catch(A.toastErr);
+    }
+  });
+
+  /* ---------- 客户评价 ---------- */
+  var editingReview = null;
+
+  function reviewRowsHtml(items) {
+    if (!items.length) {
+      document.getElementById("reviewEmpty").style.display = "block";
+      return "";
+    }
+    document.getElementById("reviewEmpty").style.display = "none";
+    return items.map(function (r, i) {
+      var stars = "★★★★★".slice(0, r.rating || 5) + "☆☆☆☆☆".slice(0, 5 - (r.rating || 5));
+      return "<tr>" +
+        "<td>" + (i + 1) + "</td>" +
+        "<td><strong>" + A.escHtml(r.name || "匿名") + "</strong></td>" +
+        "<td style=\"color:#D4AF69;\">" + stars + "</td>" +
+        "<td>" + A.escHtml((r.content || "").slice(0, 50)) + "</td>" +
+        "<td>" + A.escHtml(r.date || "—") + "</td>" +
+        "<td><span class=\"badge " + (r.published ? "badge-on" : "badge-off") + "\">" + (r.published ? "显示" : "隐藏") + "</span></td>" +
+        "<td><div class=\"row-actions\">" +
+        "<button class=\"btn btn-sm\" data-rmove=\"" + r.id + "\" data-dir=\"-1\">上移</button>" +
+        "<button class=\"btn btn-sm\" data-rmove=\"" + r.id + "\" data-dir=\"1\">下移</button>" +
+        "<button class=\"btn btn-sm\" data-redit=\"" + r.id + "\">编辑</button>" +
+        "<button class=\"btn btn-sm\" data-rtoggle=\"" + r.id + "\">" + (r.published ? "隐藏" : "显示") + "</button>" +
+        "<button class=\"btn btn-danger btn-sm\" data-rdel=\"" + r.id + "\">删除</button>" +
+        "</div></td></tr>";
+    }).join("");
+  }
+
+  function loadReviews() {
+    return A.get("/admin/api/reviews").then(function (d) {
+      document.getElementById("reviewRows").innerHTML = reviewRowsHtml(d.items);
+    });
+  }
+
+  function resetReviewForm() {
+    editingReview = null;
+    document.getElementById("reviewForm").reset();
+    document.getElementById("rRating").value = "5";
+    document.getElementById("rPublished").checked = true;
+    document.getElementById("reviewFormTitle").textContent = "新增评价";
+    document.getElementById("reviewSubmit").textContent = "新增";
+    document.getElementById("reviewCancel").style.display = "none";
+  }
+
+  document.getElementById("reviewForm").addEventListener("submit", function (e) {
+    e.preventDefault();
+    var body = {
+      name: document.getElementById("rName").value,
+      rating: Number(document.getElementById("rRating").value) || 5,
+      content: document.getElementById("rContent").value,
+      date: document.getElementById("rDate").value,
+      published: document.getElementById("rPublished").checked
+    };
+    var req = editingReview
+      ? A.post("/admin/api/reviews/" + editingReview + "/save", body)
+      : A.post("/admin/api/reviews", body);
+    req.then(function () {
+      A.toastOk(editingReview ? "已保存" : "已添加");
+      resetReviewForm();
+      loadReviews();
+    }).catch(A.toastErr);
+  });
+
+  document.getElementById("reviewCancel").addEventListener("click", resetReviewForm);
+
+  document.getElementById("reviewRows").addEventListener("click", function (e) {
+    var t = e.target;
+    var id = t.getAttribute("data-redit");
+    if (id) {
+      A.get("/admin/api/reviews").then(function (d) {
+        var r = d.items.find(function (x) { return x.id === id; });
+        if (!r) return;
+        editingReview = id;
+        document.getElementById("rName").value = r.name || "";
+        document.getElementById("rRating").value = String(r.rating || 5);
+        document.getElementById("rContent").value = r.content || "";
+        document.getElementById("rDate").value = r.date || "";
+        document.getElementById("rPublished").checked = r.published !== false;
+        document.getElementById("reviewFormTitle").textContent = "编辑评价";
+        document.getElementById("reviewSubmit").textContent = "保存修改";
+        document.getElementById("reviewCancel").style.display = "inline-flex";
+        document.getElementById("panel-reviews").scrollIntoView({ behavior: "smooth", block: "start" });
+      }).catch(A.toastErr);
+      return;
+    }
+    var del = t.getAttribute("data-rdel");
+    if (del) {
+      if (!window.confirm("确定删除该评价吗？")) return;
+      A.post("/admin/api/reviews/" + del + "/delete").then(function () { A.toastOk("已删除"); loadReviews(); }).catch(A.toastErr);
+      return;
+    }
+    var tg = t.getAttribute("data-rtoggle");
+    if (tg) {
+      A.get("/admin/api/reviews").then(function (d) {
+        var r = d.items.find(function (x) { return x.id === tg; });
+        if (!r) return;
+        return A.post("/admin/api/reviews/" + tg + "/save", {
+          name: r.name, rating: r.rating, content: r.content, date: r.date, published: r.published === false
+        });
+      }).then(function () { loadReviews(); }).catch(A.toastErr);
+      return;
+    }
+    var mv = t.getAttribute("data-rmove");
+    if (mv) {
+      A.post("/admin/api/reviews/" + mv + "/move", { dir: Number(t.getAttribute("data-dir")) })
+        .then(function () { loadReviews(); }).catch(A.toastErr);
+    }
+  });
+
+  loadMenus();
+  loadReviews();
+})();
+</script>
+</body>
+</html>

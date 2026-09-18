@@ -1,0 +1,23 @@
+{
+  "name": "fuxianjia-cms",
+  "version": "1.1.0",
+  "private": true,
+  "description": "福鲜家营养餐官网 · GrapesJS 拖拽式可视化后台",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "build": "node src/build.js",
+    "migrate:assets": "node scripts/migrate-assets.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "compression": "^1.8.2",
+    "express": "^4.19.2",
+    "express-session": "^1.18.0",
+    "multer": "^2.4.0",
+    "sharp": "^0.35.4"
+  }
+}

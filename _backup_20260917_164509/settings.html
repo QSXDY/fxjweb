@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>站点设置 · 福鲜家后台</title>
+<meta name="csrf" content="{{CSRF}}">
+<link rel="stylesheet" href="/admin/assets/admin.css">
+</head>
+<body class="admin-body">
+  <aside class="sidebar">
+    <div class="side-brand">
+      <span class="side-logo">福</span>
+      <div class="side-text"><strong>福鲜家后台</strong><em>内容管理系统</em></div>
+    </div>
+    <nav class="side-nav">
+      <a href="/admin" data-nav="dash"><svg class="nav-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7.5" height="7.5" rx="1.5"/><rect x="13.5" y="3" width="7.5" height="7.5" rx="1.5"/><rect x="3" y="13.5" width="7.5" height="7.5" rx="1.5"/><rect x="13.5" y="13.5" width="7.5" height="7.5" rx="1.5"/></svg><span>工作台</span></a>
+      <a href="/admin/pages" data-nav="pages"><svg class="nav-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 4h9l5 5v11H5z"/><path d="M14 4v5h5"/><path d="M8.5 13h7M8.5 16.5h7"/></svg><span>页面管理</span></a>
+      <a href="/admin/entries" data-nav="entries"><svg class="nav-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 6h16M4 12h16M4 18h10"/></svg><span>条目管理</span></a>
+      <a href="/admin/settings" data-nav="settings"><svg class="nav-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.87l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.7 1.7 0 0 0-1.87-.34 1.7 1.7 0 0 0-1 1.55V21a2 2 0 1 1-4 0v-.09a1.7 1.7 0 0 0-1-1.55 1.7 1.7 0 0 0-1.87.34l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.7 1.7 0 0 0 .34-1.87 1.7 1.7 0 0 0-1.55-1H3a2 2 0 1 1 0-4h.09a1.7 1.7 0 0 0 1.55-1 1.7 1.7 0 0 0-.34-1.87l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.7 1.7 0 0 0 1.87.34h.09a1.7 1.7 0 0 0 1-1.55V3a2 2 0 1 1 4 0v.09a1.7 1.7 0 0 0 1 1.55 1.7 1.7 0 0 0 1.87-.34l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.7 1.7 0 0 0-.34 1.87v.09a1.7 1.7 0 0 0 1.55 1H21a2 2 0 1 1 0 4h-.09a1.7 1.7 0 0 0-1.55 1z"/></svg><span>站点设置</span></a>
+    </nav>
+    <div class="side-foot">
+      <a href="/" target="_blank" rel="noopener">查看前台网站</a>
+      <button id="logoutBtn">退出登录</button>
+    </div>
+  </aside>
+
+  <div class="main">
+    <header class="topbar">
+      <h1>站点设置</h1>
+    </header>
+
+    <div class="content">
+      <div class="tabs">
+        <button class="tab is-active" data-tab="base">站点信息</button>
+        <button class="tab" data-tab="nav">导航菜单</button>
+        <button class="tab" data-tab="prices">价格数据</button>
+        <button class="tab" data-tab="details">套餐详情</button>
+        <button class="tab" data-tab="pwd">修改密码</button>
+      </div>
+
+      <!-- 站点信息 -->
+      <div class="tab-panel is-active" id="panel-base">
+        <div class="card">
+          <h2>站点信息</h2>
+          <p class="card-desc">电话、微信、跳转链接等全局配置，修改保存后全站立即生效。</p>
+          <form id="baseForm" class="form-grid">
+            <div class="field"><label for="bSiteName">网站名称</label><input class="input" id="bSiteName"></div>
+            <div class="field"><label for="bSiteSub">副标题</label><input class="input" id="bSiteSub"></div>
+            <div class="field"><label for="bPhone">咨询电话</label><input class="input" id="bPhone" placeholder="如 19989901658"></div>
+            <div class="field"><label for="bWechat">微信号</label><input class="input" id="bWechat"></div>
+            <div class="field full"><label for="bWechatJump">微信跳转链接（可选，填了之后"复制微信"按钮改为直接跳转）</label><input class="input" id="bWechatJump" placeholder="留空 = 按钮保持复制微信号"></div>
+            <div class="field full"><label for="bConsult">咨询按钮跳转链接（可选）</label><input class="input" id="bConsult" placeholder="留空 = 直接拨打电话"></div>
+            <div class="field full"><label for="bBooking">预约试吃跳转链接（可选）</label><input class="input" id="bBooking" placeholder="留空 = 直接拨打电话"></div>
+            <div class="field full"><label for="bMini">小程序商城链接（可选）</label><input class="input" id="bMini" placeholder="如 weixin://dl/business/?t=xxx"></div>
+            <div class="field full"><label for="bAddress">门店地址</label><input class="input" id="bAddress"></div>
+            <div class="field full"><label for="bHours">营业时间</label><input class="input" id="bHours"></div>
+            <div class="field full"><label for="bFooter">页脚备注</label><input class="input" id="bFooter"></div>
+            <div class="field full"><button class="btn btn-primary" type="submit">保存站点信息</button></div>
+          </form>
+        </div>
+      </div>
+
+      <!-- 导航菜单 -->
+      <div class="tab-panel" id="panel-nav">
+        <div class="card">
+          <h2>导航菜单</h2>
+          <p class="card-desc">网站顶部与移动端菜单共用这份配置。每项只需填写「链接标识」（英文小写字母、数字、短横线，如 <code>team</code>），前台会自动生成 <code>#team</code> 跳转锚点。</p>
+          <div class="notice" style="margin-bottom:12px;">
+            <strong>链接标识用途说明：</strong>① 前台锚点（自动加 <code>#</code>）；② 图片上传的分类文件夹（自动建目录）；③ 修改标识后，对应图片文件夹会自动改名，已插入页面的图片不受影响。<br>
+            「首页」为系统固定项，无需填写，不可删除。
+          </div>
+          <div id="navRows"></div>
+          <div style="margin-top:12px;display:flex;gap:10px;flex-wrap:wrap;">
+            <button class="btn" id="navAdd">+ 添加一行</button>
+            <button class="btn btn-primary" id="navSave">保存导航</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 价格数据 -->
+      <div class="tab-panel" id="panel-prices">
+        <div class="card">
+          <h2>价格数据</h2>
+          <p class="card-desc">首页「价格明细表」与「每日均价图表」都来自这份数据。每个格子对应 餐型 × 周期 的价格（元）。</p>
+          <div id="priceGrid"></div>
+          <div style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap;">
+            <button class="btn btn-primary" id="priceSave">保存价格</button>
+            <button class="btn" id="priceReset">恢复默认价格</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 套餐详情 -->
+      <div class="tab-panel" id="panel-details">
+        <div class="card">
+          <h2>套餐详情弹窗数据</h2>
+          <p class="card-desc">首页点击「查看详情」弹窗的内容。下方为 JSON 数据，格式务必保持正确（逗号、引号齐全），改错会导致弹窗恢复默认内容。一般建议用「恢复默认」再小幅修改。</p>
+          <div class="field">
+            <textarea class="textarea" id="detailsJson" rows="18" spellcheck="false" style="font-family:Consolas,Menlo,monospace;font-size:13px;"></textarea>
+          </div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;">
+            <button class="btn btn-primary" id="detailsSave">校验并保存</button>
+            <button class="btn" id="detailsReset">恢复默认</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 修改密码 -->
+      <div class="tab-panel" id="panel-pwd">
+        <div class="card" style="max-width:480px;">
+          <h2>修改登录密码</h2>
+          <form id="pwdForm">
+            <div class="field"><label for="pOld">原密码</label><input class="input" id="pOld" type="password" autocomplete="current-password"></div>
+            <div class="field"><label for="pNew">新密码（至少 6 位）</label><input class="input" id="pNew" type="password" autocomplete="new-password"></div>
+            <div class="field"><label for="pNew2">重复新密码</label><input class="input" id="pNew2" type="password" autocomplete="new-password"></div>
+            <button class="btn btn-primary" type="submit">修改密码</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script src="/admin/assets/admin.js"></script>
+<script>
+(function () {
+  "use strict";
+  var A = window.Admin;
+  A.setActiveNav("settings");
+
+  document.querySelectorAll(".tab").forEach(function (t) {
+    t.addEventListener("click", function () {
+      document.querySelectorAll(".tab").forEach(function (x) { x.classList.toggle("is-active", x === t); });
+      document.querySelectorAll(".tab-panel").forEach(function (p) { p.classList.remove("is-active"); });
+      document.getElementById("panel-" + t.getAttribute("data-tab")).classList.add("is-active");
+    });
+  });
+
+  var state = null;
+
+  A.get("/admin/api/settings").then(function (d) {
+    state = d;
+    fillBase(d.settings);
+    renderNav(d.nav);
+    renderPrices(d.settings.prices);
+    document.getElementById("detailsJson").value = JSON.stringify(d.settings.details || null, null, 2);
+  }).catch(A.toastErr);
+
+  /* ---------- 站点信息 ---------- */
+  function fillBase(s) {
+    document.getElementById("bSiteName").value = s.siteName || "";
+    document.getElementById("bSiteSub").value = s.siteSub || "";
+    document.getElementById("bPhone").value = s.phone || "";
+    document.getElementById("bWechat").value = s.wechatId || "";
+    document.getElementById("bWechatJump").value = s.wechatJumpUrl || "";
+    document.getElementById("bConsult").value = s.consultUrl || "";
+    document.getElementById("bBooking").value = s.bookingUrl || "";
+    document.getElementById("bMini").value = s.miniProgramUrl || "";
+    document.getElementById("bAddress").value = s.address || "";
+    document.getElementById("bHours").value = s.hours || "";
+    document.getElementById("bFooter").value = s.footerNote || "";
+  }
+
+  document.getElementById("baseForm").addEventListener("submit", function (e) {
+    e.preventDefault();
+    A.post("/admin/api/settings", {
+      siteName: document.getElementById("bSiteName").value,
+      siteSub: document.getElementById("bSiteSub").value,
+      phone: document.getElementById("bPhone").value,
+      wechatId: document.getElementById("bWechat").value,
+      wechatJumpUrl: document.getElementById("bWechatJump").value,
+      consultUrl: document.getElementById("bConsult").value,
+      bookingUrl: document.getElementById("bBooking").value,
+      miniProgramUrl: document.getElementById("bMini").value,
+      address: document.getElementById("bAddress").value,
+      hours: document.getElementById("bHours").value,
+      footerNote: document.getElementById("bFooter").value
+    }).then(function () { A.toastOk("站点信息已保存"); }).catch(A.toastErr);
+  });
+
+  /* ---------- 导航 ---------- */
+  var SLUG_RE = /^[a-z0-9][a-z0-9-]{0,49}$/;
+
+  function navRowHtml(n, i) {
+    var isHome = n.fixed || n.slug === "top";
+    if (isHome) {
+      return '<div style="display:flex;gap:10px;align-items:center;margin-bottom:8px;padding:8px 10px;background:var(--bg-beige);border-radius:8px;">' +
+        '<span style="color:var(--text-sub);font-size:13px;width:22px;">' + (i + 1) + '</span>' +
+        '<input class="input" style="flex:1.2;" value="首页" disabled>' +
+        '<input class="input" style="flex:1.8;" value="top" disabled title="系统固定项">' +
+        '<span style="color:var(--text-sub);font-size:12.5px;">系统固定 · 置顶</span></div>';
+    }
+    return '<div style="display:flex;gap:10px;align-items:center;margin-bottom:8px;">' +
+      '<span style="color:var(--text-sub);font-size:13px;width:22px;">' + (i + 1) + '</span>' +
+      '<input class="input" style="flex:1.2;" data-nlabel value="' + A.escHtml(n.label) + '" placeholder="菜单名称，如：专家团队">' +
+      '<input class="input" style="flex:1.8;" data-nslug value="' + A.escHtml(n.slug) + '" placeholder="链接标识，如：team">' +
+      '<button class="btn btn-sm" data-nmove="-1">上移</button>' +
+      '<button class="btn btn-sm" data-nmove="1">下移</button>' +
+      '<button class="btn btn-danger btn-sm" data-ndel>删除</button>';
+  }
+
+  function renderNav(nav) {
+    var wrap = document.getElementById("navRows");
+    wrap.innerHTML = "";
+    var rest = (nav || []).filter(function (n) { return !(n.fixed || n.slug === "top"); });
+    var list = [{ id: "nav_home", label: "首页", slug: "top", fixed: true }].concat(rest);
+    list.forEach(function (n, i) {
+      var div = document.createElement("div");
+      div.innerHTML = navRowHtml(n, i);
+      wrap.appendChild(div.firstElementChild);
+    });
+  }
+
+  document.getElementById("navAdd").addEventListener("click", function () {
+    var nav = collectNav();
+    nav.push({ label: "", slug: "" });
+    renderNav(nav);
+  });
+
+  document.getElementById("navRows").addEventListener("click", function (e) {
+    var btn = e.target.closest("[data-ndel],[data-nmove]");
+    if (!btn) return;
+    var nav = collectNav();
+    var idx = Array.prototype.indexOf.call(document.getElementById("navRows").children, btn.closest("div"));
+    if (btn.hasAttribute("data-ndel")) {
+      nav.splice(idx - 1, 1);
+    } else {
+      var dir = Number(btn.getAttribute("data-nmove"));
+      var t = idx - 1 + dir;
+      if (t < 0 || t >= nav.length) return;
+      var tmp = nav[idx - 1]; nav[idx - 1] = nav[t]; nav[t] = tmp;
+    }
+    renderNav(nav);
+  });
+
+  function collectNav() {
+    var rows = document.querySelectorAll("#navRows div");
+    return Array.prototype.map.call(rows, function (r, i) {
+      if (i === 0) return null; /* 首页固定行不参与收集 */
+      return {
+        label: r.querySelector("[data-nlabel]").value.trim(),
+        slug: r.querySelector("[data-nslug]").value.trim()
+      };
+    }).filter(Boolean).filter(function (n) { return n.label || n.slug; });
+  }
+
+  document.getElementById("navSave").addEventListener("click", function () {
+    var nav = collectNav();
+    for (var i = 0; i < nav.length; i++) {
+      if (!nav[i].label) { A.toastErr("第 " + (i + 2) + " 行未填菜单名称"); return; }
+      if (!SLUG_RE.test(nav[i].slug)) {
+        A.toastErr("第 " + (i + 2) + " 行的链接标识不合法：只能用小写字母、数字、短横线（如 team），不能有中文、空格或 #");
+        return;
+      }
+    }
+    A.post("/admin/api/nav", { nav: nav }).then(function (d) {
+      A.toastOk("导航已保存" + (d.nav ? "；若修改了链接标识，图片文件夹已自动改名" : ""));
+      renderNav(d.nav || []);
+    }).catch(A.toastErr);
+  });
+
+  /* ---------- 价格数据 ---------- */
+  var DEFAULT_PRICES = {
+    standard: { 14: [2070, 2590, 2490, 3010], 28: [3980, 4980, 4790, 5790], 42: [5770, 7220, 6950, 8400] },
+    custom: { 14: [2280, 2850, 2740, 3310], 28: [4380, 5480, 5270, 6370], 42: [6350, 7950, 7640, 9240] },
+    premium: { 14: [2490, 3110, 2990, 3610], 28: [4780, 5980, 5750, 6950], 42: [6930, 8670, 8340, 10080] }
+  };
+  var TIERS = [["standard", "标准调养"], ["custom", "定制调理"], ["premium", "专属私配"]];
+  var PERIODS = [14, 28, 42];
+  var MEALS = ["每日两餐", "每日三餐", "每日两餐两点", "每日三餐两点"];
+
+  function renderPrices(prices) {
+    var p = prices || DEFAULT_PRICES;
+    var wrap = document.getElementById("priceGrid");
+    var html = "";
+    TIERS.forEach(function (tier) {
+      html += '<div style="border:1px solid var(--line);border-radius:10px;padding:14px;margin-bottom:14px;">';
+      html += '<div style="font-weight:700;margin-bottom:10px;color:var(--brand-primary-deep);">' + tier[1] + '套餐</div>';
+      html += '<div class="table-wrap"><table class="list-table">';
+      html += "<thead><tr><th>餐型 / 周期</th>";
+      PERIODS.forEach(function (pd) { html += "<th>" + pd + " 天</th>"; });
+      html += "</tr></thead><tbody>";
+      MEALS.forEach(function (meal, mi) {
+        html += "<tr><td>" + meal + "</td>";
+        PERIODS.forEach(function (pd) {
+          var v = (p[tier[0]] && p[tier[0]][pd] && p[tier[0]][pd][mi]) || "";
+          html += '<td><input class="input" style="max-width:130px;" data-price="' + tier[0] + '-' + pd + '-' + mi + '" value="' + A.escHtml(v) + '"></td>';
+        });
+        html += "</tr>";
+      });
+      html += "</tbody></table></div></div>";
+    });
+    wrap.innerHTML = html;
+  }
+
+  function collectPrices() {
+    var out = {};
+    TIERS.forEach(function (tier) {
+      out[tier[0]] = {};
+      PERIODS.forEach(function (pd) {
+        out[tier[0]][pd] = [];
+        MEALS.forEach(function (_, mi) {
+          var input = document.querySelector('[data-price="' + tier[0] + "-" + pd + "-" + mi + '"]');
+          var v = input ? Number(input.value) : 0;
+          out[tier[0]][pd].push(isFinite(v) && v >= 0 ? Math.round(v) : 0);
+        });
+      });
+    });
+    return out;
+  }
+
+  document.getElementById("priceSave").addEventListener("click", function () {
+    A.post("/admin/api/settings", { prices: collectPrices() }).then(function () {
+      A.toastOk("价格已保存，首页刷新后生效");
+    }).catch(A.toastErr);
+  });
+
+  document.getElementById("priceReset").addEventListener("click", function () {
+    renderPrices(DEFAULT_PRICES);
+    A.post("/admin/api/settings", { prices: DEFAULT_PRICES }).then(function () {
+      A.toastOk("已恢复默认价格");
+    }).catch(A.toastErr);
+  });
+
+  /* ---------- 套餐详情 ---------- */
+  document.getElementById("detailsSave").addEventListener("click", function () {
+    var raw = document.getElementById("detailsJson").value.trim();
+    var parsed = null;
+    if (raw) {
+      try { parsed = JSON.parse(raw); }
+      catch (e) { A.toastErr("JSON 格式有误：" + e.message); return; }
+      if (typeof parsed !== "object" || Array.isArray(parsed)) { A.toastErr("内容应为对象，请检查格式"); return; }
+    }
+    A.post("/admin/api/settings", { details: parsed }).then(function () {
+      A.toastOk("套餐详情已保存");
+    }).catch(A.toastErr);
+  });
+
+  document.getElementById("detailsReset").addEventListener("click", function () {
+    document.getElementById("detailsJson").value = "null";
+    A.post("/admin/api/settings", { details: null }).then(function () {
+      A.toastOk("已恢复默认套餐详情");
+    }).catch(A.toastErr);
+  });
+
+  /* ---------- 修改密码 ---------- */
+  document.getElementById("pwdForm").addEventListener("submit", function (e) {
+    e.preventDefault();
+    var n = document.getElementById("pNew").value;
+    if (n !== document.getElementById("pNew2").value) {
+      A.toastErr("两次输入的新密码不一致");
+      return;
+    }
+    A.post("/admin/api/password", { old: document.getElementById("pOld").value, new: n }).then(function () {
+      A.toastOk("密码已修改，下次登录请使用新密码");
+      document.getElementById("pwdForm").reset();
+    }).catch(A.toastErr);
+  });
+})();
+</script>
+</body>
+</html>

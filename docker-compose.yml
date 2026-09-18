@@ -1,0 +1,30 @@
+# ============================================================
+# 福鲜家 CMS · docker-compose（1Panel 单机部署）
+# 镜像已发布到 DockerHub（GitHub Actions 打 tag 自动构建推送），
+# 服务器直接拉取即可，无需本地构建。
+# 只有一个应用容器 fxjweb（前台静态由 1Panel 自带 OpenResty 承担）
+# 容器加入 1panel-network，1Panel 网站反代填 http://fxjweb:3004
+# 容器不映射公网端口，仅网络内通信
+# ============================================================
+services:
+  fxjweb:
+    # 远程镜像（DockerHub 用户名 cnqsxdy），拉取即用，无需本地构建
+    image: cnqsxdy/fxjweb:v1.1.0
+    container_name: fxjweb
+    restart: unless-stopped
+    environment:
+      - PORT=3004
+      - NODE_ENV=production
+      - TZ=Asia/Shanghai
+    volumes:
+      - ./data:/app/data
+      - ./uploads:/app/public/uploads
+      - ./dist:/app/dist
+    expose:
+      - "3004"
+    networks:
+      - 1panel-network
+
+networks:
+  1panel-network:
+    external: true

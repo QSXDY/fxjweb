@@ -1,0 +1,164 @@
+/* ============================================================
+   福鲜家 CMS · 数据组件样式 widget.css
+   每日菜单列表 / 客户评价列表 / 空状态 / 编辑器占位提示
+   轻奢 VI：提夫尼蓝 × 米白 × 白
+   ============================================================ */
+:root {
+  --brand-primary: #6FC9D1;
+  --brand-primary-deep: #2E8E97;
+  --brand-gold: #C9A96A;
+  --brand-gold-dark: #B08D4F;
+  --brand-fresh: #42B883;
+  --bg-white: #FFFFFF;
+  --bg-light: #F6F8F8;
+  --bg-beige: #F7F3EC;
+  --text-main: #2F3A38;
+  --text-sub: #6B7A77;
+  --line: #E4ECE9;
+}
+
+/* ---------- 编辑器画布中的占位提示 ---------- */
+.fxj-widget {
+  border: 2px dashed #A9D6DC;
+  background: rgba(111, 201, 209, 0.08);
+  border-radius: 10px;
+  padding: 18px;
+  margin: 12px 0;
+  color: var(--brand-primary-deep);
+  font-size: 14px;
+  text-align: center;
+}
+
+/* ---------- 每日菜单列表 ---------- */
+.fxj-menu-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 920px;
+  margin: 0 auto;
+}
+
+.fxj-menu-item {
+  background: var(--bg-white);
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--brand-primary);
+  border-radius: 10px;
+  padding: 14px 18px;
+}
+
+.fxj-menu-head {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+}
+
+.fxj-menu-date {
+  font-weight: 700;
+  color: var(--text-main);
+  font-size: 15px;
+}
+
+.fxj-menu-meal {
+  font-size: 13px;
+  color: var(--brand-primary-deep);
+  background: rgba(111, 201, 209, 0.12);
+  border-radius: 999px;
+  padding: 2px 10px;
+}
+
+.fxj-menu-items {
+  margin: 10px 0 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 6px 16px;
+}
+
+.fxj-menu-items li {
+  position: relative;
+  padding-left: 14px;
+  font-size: 14px;
+  color: var(--text-main);
+  line-height: 1.7;
+}
+
+.fxj-menu-items li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 10px;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--brand-primary);
+}
+
+/* ---------- 客户评价列表 ---------- */
+.fxj-reviews-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.fxj-review-card {
+  background: var(--bg-white);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 18px;
+}
+
+.fxj-review-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.fxj-review-name {
+  font-weight: 700;
+  color: var(--text-main);
+  font-size: 15px;
+}
+
+.fxj-review-stars {
+  color: var(--brand-gold);
+  font-size: 15px;
+  letter-spacing: 2px;
+}
+
+.fxj-review-content {
+  margin: 10px 0 8px;
+  font-size: 14px;
+  color: var(--text-main);
+  line-height: 1.8;
+}
+
+.fxj-review-date {
+  font-size: 12.5px;
+  color: var(--text-sub);
+}
+
+/* ---------- 空状态 ---------- */
+.fxj-empty {
+  text-align: center;
+  color: var(--text-sub);
+  background: var(--bg-white);
+  border: 1px dashed #C9D6D4;
+  border-radius: 12px;
+  padding: 40px 20px;
+  font-size: 14px;
+}
+
+/* ---------- 新页面默认块 ---------- */
+.fxj-editable h2 {
+  color: var(--text-main);
+}
+
+.fxj-editable p {
+  color: var(--text-sub);
+  line-height: 1.8;
+}

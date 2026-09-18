@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+{{FAVICON_TAG}}
+<title>页面管理 · 福鲜家后台</title>
+<meta name="csrf" content="{{CSRF}}">
+<link rel="stylesheet" href="/admin/assets/admin.css">
+</head>
+<body class="admin-body">
+  <aside class="sidebar">
+    <div class="side-brand">
+      {{SIDE_LOGO}}
+      <div class="side-text"><strong>福鲜家后台</strong><em>内容管理系统</em></div>
+    </div>
+    <nav class="side-nav">
+      <a href="/admin" data-nav="dash"><svg class="nav-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7.5" height="7.5" rx="1.5"/><rect x="13.5" y="3" width="7.5" height="7.5" rx="1.5"/><rect x="3" y="13.5" width="7.5" height="7.5" rx="1.5"/><rect x="13.5" y="13.5" width="7.5" height="7.5" rx="1.5"/></svg><span>工作台</span></a>
+      <a href="/admin/pages" data-nav="pages"><svg class="nav-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 4h9l5 5v11H5z"/><path d="M14 4v5h5"/><path d="M8.5 13h7M8.5 16.5h7"/></svg><span>页面管理</span></a>
+      <a href="/admin/entries" data-nav="entries"><svg class="nav-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 6h16M4 12h16M4 18h10"/></svg><span>条目管理</span></a>
+      <a href="/admin/settings" data-nav="settings"><svg class="nav-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.87l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.7 1.7 0 0 0-1.87-.34 1.7 1.7 0 0 0-1 1.55V21a2 2 0 1 1-4 0v-.09a1.7 1.7 0 0 0-1-1.55 1.7 1.7 0 0 0-1.87.34l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.7 1.7 0 0 0 .34-1.87 1.7 1.7 0 0 0-1.55-1H3a2 2 0 1 1 0-4h.09a1.7 1.7 0 0 0 1.55-1 1.7 1.7 0 0 0-.34-1.87l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.7 1.7 0 0 0 1.87.34h.09a1.7 1.7 0 0 0 1-1.55V3a2 2 0 1 1 4 0v.09a1.7 1.7 0 0 0 1 1.55 1.7 1.7 0 0 0 1.87-.34l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.7 1.7 0 0 0-.34 1.87v.09a1.7 1.7 0 0 0 1.55 1H21a2 2 0 1 1 0 4h-.09a1.7 1.7 0 0 0-1.55 1z"/></svg><span>站点设置</span></a>
+    </nav>
+    <div class="side-foot">
+      <a href="/" target="_blank" rel="noopener">查看前台网站</a>
+      <button id="logoutBtn">退出登录</button>
+    </div>
+  </aside>
+
+  <div class="main">
+    <header class="topbar">
+      <h1>页面管理</h1>
+      <div class="top-actions">
+        <button class="btn btn-primary" id="newPageBtn">新建页面</button>
+      </div>
+    </header>
+
+    <div class="content">
+      <div class="notice">
+        点「编辑」进入可视化编辑器：左侧拖拽区块、点选文字直接修改，右侧调整样式，右上角「保存」后前台立即生效。<br>
+        <strong>首页</strong>是现成设计，改文字/图片即可；<strong>新页面</strong>从空白开始搭建（如「每日菜单」「客户评价」页面）。<br>
+        <strong>套餐二级页</strong>（月子餐/备孕/控脂/产后/术后）由「站点设置 → 套餐方案」数据驱动：可在此停用/启用（前台导航、首页入口、二级页随之联动），点「编辑」直接进入套餐方案数据编辑。
+      </div>
+
+      <div class="card">
+        <div class="table-wrap">
+          <table class="list-table">
+            <thead>
+              <tr><th>页面</th><th>网址</th><th>状态</th><th>更新时间</th><th style="width:220px;">操作</th></tr>
+            </thead>
+            <tbody id="pageRows"></tbody>
+          </table>
+          <div class="empty-hint" id="pageEmpty" style="display:none;">暂无页面</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-mask" id="newPageModal">
+    <div class="modal-box">
+      <h3>新建页面</h3>
+      <div class="field">
+        <label for="npTitle">页面标题</label>
+        <input class="input" id="npTitle" placeholder="例如：每日菜单">
+      </div>
+      <div class="field">
+        <label for="npSlug">网址后缀（访问地址）</label>
+        <input class="input" id="npSlug" placeholder="例如：menu（小写字母/数字/短横线）">
+        <div class="hint">访问地址为：您的域名/网址后缀，例如 https://您的域名/menu</div>
+      </div>
+      <div class="modal-foot">
+        <button class="btn" id="npCancel">取消</button>
+        <button class="btn btn-primary" id="npSubmit">创建并编辑</button>
+      </div>
+    </div>
+  </div>
+
+<script src="/admin/assets/admin.js"></script>
+<script>
+(function () {
+  "use strict";
+  var A = window.Admin;
+  A.setActiveNav("pages");
+
+  function renderRows(pages) {
+    var tbody = document.getElementById("pageRows");
+    var empty = document.getElementById("pageEmpty");
+    tbody.innerHTML = "";
+    if (!pages.length) {
+      empty.style.display = "block";
+      return;
+    }
+    empty.style.display = "none";
+    pages.forEach(function (p) {
+      var homeBadge = p.is_home ? '<span class="badge badge-home">首页</span> ' : "";
+      var planBadge = p.is_plan_line ? '<span class="badge badge-plan">套餐二级页</span> ' : "";
+      var status = p.published
+        ? '<span class="badge badge-on">已发布</span>'
+        : '<span class="badge badge-off">未发布</span>';
+      var url = "/" + p.slug;
+      var tr = document.createElement("tr");
+      tr.setAttribute("data-slug", p.slug);
+      if (p.is_plan_line) {
+        tr.innerHTML =
+          "<td>" + planBadge + "<strong>" + A.escHtml(p.title) + "</strong></td>" +
+          "<td><a href=\"" + url + "\" target=\"_blank\" rel=\"noopener\">" + url + "</a></td>" +
+          "<td>" + status + "</td>" +
+          "<td>—</td>" +
+          "<td><div class=\"row-actions\">" +
+          "<a class=\"btn btn-primary btn-sm\" href=\"/admin/settings?tab=plans&line=" + encodeURIComponent(p.slug) + "\">编辑</a>" +
+          "<button class=\"btn btn-sm\" data-preview=\"" + p.slug + "\">预览</button>" +
+          "<button class=\"btn btn-sm\" data-toggle=\"" + p.slug + "\" data-state=\"" + (p.published ? "1" : "0") + "\">" + (p.published ? "停用" : "启用") + "</button>" +
+          "</div></td>";
+      } else {
+        tr.innerHTML =
+          "<td>" + homeBadge + "<strong>" + A.escHtml(p.title) + "</strong></td>" +
+          "<td><a href=\"" + url + "\" target=\"_blank\" rel=\"noopener\">" + url + "</a></td>" +
+          "<td>" + status + "</td>" +
+          "<td>" + A.escHtml((p.updated_at || "").slice(0, 16).replace("T", " ")) + "</td>" +
+          "<td><div class=\"row-actions\">" +
+          "<a class=\"btn btn-primary btn-sm\" href=\"/admin/pages/" + p.id + "/edit\">编辑</a>" +
+          "<a class=\"btn btn-sm\" href=\"" + url + "\" target=\"_blank\" rel=\"noopener\">预览</a>" +
+          (p.is_home ? "" : "<button class=\"btn btn-danger btn-sm\" data-del=\"" + p.id + "\">删除</button>") +
+          "</div></td>";
+      }
+      tbody.appendChild(tr);
+    });
+  }
+
+  function loadAll() {
+    A.get("/admin/api/pages").then(function (d) {
+      renderRows(d.pages);
+    }).catch(A.toastErr);
+  }
+
+  /* 新建页面 */
+  var modal = document.getElementById("newPageModal");
+  document.getElementById("newPageBtn").addEventListener("click", function () {
+    document.getElementById("npTitle").value = "";
+    document.getElementById("npSlug").value = "";
+    A.openModal("newPageModal");
+    document.getElementById("npTitle").focus();
+  });
+  document.getElementById("npCancel").addEventListener("click", function () { A.closeModal("newPageModal"); });
+  document.getElementById("npSubmit").addEventListener("click", function () {
+    var title = document.getElementById("npTitle").value.trim();
+    var slug = document.getElementById("npSlug").value.trim().toLowerCase();
+    A.post("/admin/api/pages", { title: title, slug: slug }).then(function (d) {
+      A.toastOk("页面已创建");
+      window.location.href = "/admin/pages/" + d.id + "/edit";
+    }).catch(A.toastErr);
+  });
+
+  /* 行内预览展开（二级页/普通页通用） */
+  document.getElementById("pageRows").addEventListener("click", function (e) {
+    var pv = e.target.closest("[data-preview]");
+    if (pv) {
+      var slug = pv.getAttribute("data-preview");
+      var tbody = document.getElementById("pageRows");
+      var row = pv.closest("tr");
+      var existing = row.nextElementSibling;
+      if (existing && existing.classList.contains("preview-row")) {
+        existing.remove();
+        return;
+      }
+      document.querySelectorAll(".preview-row").forEach(function (r) { r.remove(); });
+      var pr = document.createElement("tr");
+      pr.className = "preview-row";
+      pr.innerHTML = '<td colspan="5" style="padding:10px 0;"><iframe src="/' + encodeURIComponent(slug) +
+        '" style="width:100%;height:520px;border:1px solid var(--line);border-radius:10px;background:#fff;" title="页面预览"></iframe></td>';
+      row.after(pr);
+      return;
+    }
+    var tg = e.target.closest("[data-toggle]");
+    if (tg) {
+      var slug2 = tg.getAttribute("data-toggle");
+      var next = tg.getAttribute("data-state") === "1" ? false : true;
+      A.post("/admin/api/pages/plan-toggle", { slug: slug2, published: next }).then(function () {
+        A.toastOk(next ? "已启用" : "已停用，前台导航/首页入口/二级页已同步");
+        loadAll();
+      }).catch(A.toastErr);
+      return;
+    }
+  });
+
+  /* 删除页面 */
+  document.getElementById("pageRows").addEventListener("click", function (e) {
+    var btn = e.target.closest("[data-del]");
+    if (!btn) return;
+    if (!window.confirm("确定删除该页面吗？删除后前台立即无法访问。")) return;
+    A.post("/admin/api/pages/" + btn.getAttribute("data-del") + "/delete").then(function () {
+      A.toastOk("已删除");
+      loadAll();
+    }).catch(A.toastErr);
+  });
+
+  loadAll();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>页面不存在 · 福鲜家营养餐</title>
+<link rel="stylesheet" href="/css/style.css?v=mu5bg19d">
+<link rel="stylesheet" href="/css/widget.css?v=mu5bg19d">
+</head>
+<body style="min-height:100vh;display:flex;align-items:center;justify-content:center;background:#F6F8F7;">
+<div style="text-align:center;padding:40px 20px;max-width:520px;">
+<div style="font-size:64px;font-weight:700;color:#7EBDBA;">404</div>
+<h2 style="color:#25322E;margin:8px 0 12px;">页面不存在或已下线</h2>
+<p style="color:#57625E;margin:0 0 20px;">您访问的地址可能有误，或页面已被删除。</p>
+<a class="btn btn-deep" href="/" style="display:inline-block;">返回首页</a>
+</div>
+</body>
+</html>

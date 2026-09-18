@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="500" viewBox="0 0 800 500">
+  <rect width="800" height="500" fill="#F6F1E8"/>
+  <rect x="1" y="1" width="798" height="498" fill="none" stroke="#D4AF69" stroke-width="2" stroke-dasharray="8 8"/>
+  <text x="400" y="238" text-anchor="middle" font-family="Microsoft YaHei, PingFang SC, sans-serif" font-size="26" fill="#B8944C">图片占位 · 点击选中后在右侧换图</text>
+  <text x="400" y="276" text-anchor="middle" font-family="Microsoft YaHei, PingFang SC, sans-serif" font-size="18" fill="#C4A870">支持上传 jpg / png / webp / gif</text>
+</svg>

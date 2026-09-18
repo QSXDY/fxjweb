@@ -1,0 +1,1128 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+{{FAVICON_TAG}}
+<title>站点设置 · 福鲜家后台</title>
+<meta name="csrf" content="{{CSRF}}">
+<link rel="stylesheet" href="/admin/assets/admin.css">
+</head>
+<body class="admin-body">
+  <aside class="sidebar">
+    <div class="side-brand">
+      {{SIDE_LOGO}}
+      <div class="side-text"><strong>福鲜家后台</strong><em>内容管理系统</em></div>
+    </div>
+    <nav class="side-nav">
+      <a href="/admin" data-nav="dash"><svg class="nav-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7.5" height="7.5" rx="1.5"/><rect x="13.5" y="3" width="7.5" height="7.5" rx="1.5"/><rect x="3" y="13.5" width="7.5" height="7.5" rx="1.5"/><rect x="13.5" y="13.5" width="7.5" height="7.5" rx="1.5"/></svg><span>工作台</span></a>
+      <a href="/admin/pages" data-nav="pages"><svg class="nav-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 4h9l5 5v11H5z"/><path d="M14 4v5h5"/><path d="M8.5 13h7M8.5 16.5h7"/></svg><span>页面管理</span></a>
+      <a href="/admin/entries" data-nav="entries"><svg class="nav-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 6h16M4 12h16M4 18h10"/></svg><span>条目管理</span></a>
+      <a href="/admin/settings" data-nav="settings"><svg class="nav-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.87l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.7 1.7 0 0 0-1.87-.34 1.7 1.7 0 0 0-1 1.55V21a2 2 0 1 1-4 0v-.09a1.7 1.7 0 0 0-1-1.55 1.7 1.7 0 0 0-1.87.34l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.7 1.7 0 0 0 .34-1.87 1.7 1.7 0 0 0-1.55-1H3a2 2 0 1 1 0-4h.09a1.7 1.7 0 0 0 1.55-1 1.7 1.7 0 0 0-.34-1.87l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.7 1.7 0 0 0 1.87.34h.09a1.7 1.7 0 0 0 1-1.55V3a2 2 0 1 1 4 0v.09a1.7 1.7 0 0 0 1 1.55 1.7 1.7 0 0 0 1.87-.34l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.7 1.7 0 0 0-.34 1.87v.09a1.7 1.7 0 0 0 1.55 1H21a2 2 0 1 1 0 4h-.09a1.7 1.7 0 0 0-1.55 1z"/></svg><span>站点设置</span></a>
+    </nav>
+    <div class="side-foot">
+      <a href="/" target="_blank" rel="noopener">查看前台网站</a>
+      <button id="logoutBtn">退出登录</button>
+    </div>
+  </aside>
+
+  <div class="main">
+    <header class="topbar">
+      <h1>站点设置</h1>
+    </header>
+
+    <div class="content">
+      <div class="tabs">
+        <button class="tab is-active" data-tab="base">站点信息</button>
+        <button class="tab" data-tab="nav">导航菜单</button>
+        <button class="tab" data-tab="details">套餐详情</button>
+        <button class="tab" data-tab="home">首页区块</button>
+        <button class="tab" data-tab="plans">套餐方案</button>
+        <button class="tab" data-tab="pwd">修改密码</button>
+      </div>
+
+      <!-- 站点信息 -->
+      <div class="tab-panel is-active" id="panel-base">
+        <div class="card">
+          <h2>站点信息</h2>
+          <p class="card-desc">电话、微信、跳转链接等全局配置，修改保存后全站立即生效。</p>
+          <form id="baseForm" class="form-grid">
+            <div class="field full">
+              <label>站点 LOGO（显示在顶部导航；推荐 SVG，矢量可同时用作 Favicon）</label>
+              <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;">
+                <img id="bLogoPrev" alt="" style="width:46px;height:46px;object-fit:contain;border:1px solid var(--line);border-radius:10px;background:#fff;display:none;">
+                <button type="button" class="btn btn-sm" id="bLogoPick">上传 LOGO</button>
+                <button type="button" class="btn btn-sm btn-danger" id="bLogoClear" style="display:none;">移除</button>
+                <span style="font-size:12.5px;color:var(--text-sub);">支持 SVG / PNG / WebP / JPG，SVG 最清晰</span>
+              </div>
+              <input type="hidden" id="bLogoUrl">
+              <input type="file" id="bLogoFile" accept=".svg,.png,.webp,.jpg,.jpeg" style="display:none;">
+            </div>
+            <div class="field full">
+              <label>浏览器标签图标 Favicon（显示在浏览器标签页；不填则用默认图标）</label>
+              <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;">
+                <img id="bFavPrev" alt="" style="width:24px;height:24px;object-fit:contain;border:1px solid var(--line);border-radius:6px;background:#fff;display:none;">
+                <button type="button" class="btn btn-sm" id="bFavPick">上传 Favicon</button>
+                <button type="button" class="btn btn-sm btn-danger" id="bFavClear" style="display:none;">移除</button>
+                <span style="font-size:12.5px;color:var(--text-sub);">推荐 SVG（无尺寸限制）或 ≥32×32 的 PNG</span>
+              </div>
+              <input type="hidden" id="bFavUrl">
+              <input type="file" id="bFavFile" accept=".svg,.png,.webp,.jpg,.jpeg,.ico" style="display:none;">
+            </div>
+            <div class="field full">
+              <label>微信二维码（显示在各页面联系区；不填则用默认二维码）</label>
+              <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;">
+                <img id="bQrPrev" alt="" style="width:64px;height:64px;object-fit:contain;border:1px solid var(--line);border-radius:10px;background:#fff;display:none;">
+                <button type="button" class="btn btn-sm" id="bQrPick">上传二维码</button>
+                <button type="button" class="btn btn-sm btn-danger" id="bQrClear" style="display:none;">移除</button>
+                <span style="font-size:12.5px;color:var(--text-sub);">支持 PNG / WebP / JPG / SVG，建议正方形 500×500 以上</span>
+              </div>
+              <input type="hidden" id="bQrUrl">
+              <input type="file" id="bQrFile" accept=".svg,.png,.webp,.jpg,.jpeg" style="display:none;">
+            </div>
+            <div class="field"><label for="bSiteName">网站名称</label><input class="input" id="bSiteName"></div>
+            <div class="field"><label for="bSiteSub">副标题</label><input class="input" id="bSiteSub"></div>
+            <div class="field"><label for="bPhone">咨询电话</label><input class="input" id="bPhone" placeholder="如 19989901658"></div>
+            <div class="field"><label for="bWechat">微信号</label><input class="input" id="bWechat"></div>
+            <div class="field full"><label for="bWechatJump">微信跳转链接（可选，填了之后"复制微信"按钮改为直接跳转）</label><input class="input" id="bWechatJump" placeholder="留空 = 按钮保持复制微信号"></div>
+            <div class="field full"><label for="bConsult">咨询按钮跳转链接（可选）</label><input class="input" id="bConsult" placeholder="留空 = 直接拨打电话"></div>
+            <div class="field full"><label for="bBooking">预约试吃跳转链接（可选）</label><input class="input" id="bBooking" placeholder="留空 = 直接拨打电话"></div>
+            <div class="field full"><label for="bMini">小程序商城链接（可选）</label><input class="input" id="bMini" placeholder="如 weixin://dl/business/?t=xxx"></div>
+            <div class="field full"><label for="bAddress">门店地址</label><input class="input" id="bAddress"></div>
+            <div class="field full"><label for="bHours">营业时间</label><input class="input" id="bHours"></div>
+            <div class="field full"><label for="bFooter">页脚备注</label><input class="input" id="bFooter"></div>
+            <div class="field full"><label for="bIcp">备案信息（如：滇ICP备XXXXXX号-1）</label><input class="input" id="bIcp" placeholder="不填则页脚不显示备案行"></div>
+            <div class="field full"><button class="btn btn-primary" type="submit">保存站点信息</button></div>
+          </form>
+        </div>
+      </div>
+
+      <!-- 导航菜单 -->
+      <div class="tab-panel" id="panel-nav">
+        <div class="card">
+          <h2>导航菜单</h2>
+          <p class="card-desc">网站顶部与移动端菜单共用这份配置。每项只需填写「链接标识」（英文小写字母、数字、短横线，如 <code>team</code>），前台会自动生成 <code>#team</code> 跳转锚点。</p>
+          <div class="notice" style="margin-bottom:12px;">
+            <strong>链接标识用途说明：</strong>① 前台锚点（自动加 <code>#</code>）；② 图片上传的分类文件夹（自动建目录）；③ 修改标识后，对应图片文件夹会自动改名，已插入页面的图片不受影响。<br>
+            「首页」为系统固定项，无需填写，不可删除。
+          </div>
+          <div id="navRows"></div>
+          <div style="margin-top:12px;display:flex;gap:10px;flex-wrap:wrap;">
+            <button class="btn" id="navAdd">+ 添加一行</button>
+            <button class="btn btn-primary" id="navSave">保存导航</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 套餐详情 -->
+      <div class="tab-panel" id="panel-details">
+        <div class="card">
+          <h2>套餐详情弹窗数据</h2>
+          <p class="card-desc">首页点击「查看详情」弹窗的内容。下方为 JSON 数据，格式务必保持正确（逗号、引号齐全），改错会导致弹窗恢复默认内容。一般建议用「恢复默认」再小幅修改。</p>
+          <div class="field">
+            <textarea class="textarea" id="detailsJson" rows="18" spellcheck="false" style="font-family:Consolas,Menlo,monospace;font-size:13px;"></textarea>
+          </div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;">
+            <button class="btn btn-primary" id="detailsSave">校验并保存</button>
+            <button class="btn" id="detailsReset">恢复默认</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 首页区块 -->
+      <div class="tab-panel" id="panel-home">
+        <div class="card">
+          <h2>首页区块（专家团队 / 服务保障）</h2>
+          <p class="card-desc">首页三个内容区的可视化编辑：套餐入口卡、专家团队、服务保障。前台每个区域自动排布（每排 3 个），新增内容自动往后追加、超出自动换行，不会留下空位。</p>
+          <div class="notice" style="margin-bottom:14px;">
+            <strong>套餐方案入口卡：</strong>由「套餐方案」页签数据自动生成（名称 / 副标题 / 标签 / 入口卡图），无需在此重复填写；新增或停用餐线后入口卡自动增减、自动排布。
+            <button class="btn btn-sm" id="homeGoPlans" style="margin-left:8px;">去套餐方案编辑</button>
+          </div>
+          <h3 style="margin:18px 0 8px;">专家团队（前台每排 3 个）</h3>
+          <div class="notice" style="margin-bottom:10px;">「图标」为卡片左上角图形；「正文条目」每行一条；「底部标签」每行一条（如：人社部国家级证书）。成员新增后自动追加到末尾并换行。</div>
+          <div id="homeTeamRows"></div>
+          <button class="btn" id="homeTeamAdd">+ 添加团队成员</button>
+          <h3 style="margin:24px 0 8px;">服务保障（前台每排 3 个）</h3>
+          <div id="homeSvcRows"></div>
+          <button class="btn" id="homeSvcAdd">+ 添加服务项</button>
+          <div style="margin-top:16px;display:flex;gap:10px;align-items:center;">
+            <button class="btn btn-primary" id="homeSave">保存首页区块</button>
+            <span class="hint">保存后前台立即生效</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 套餐方案（二级页数据驱动，后台可编辑） -->
+      <div class="tab-panel" id="panel-plans">
+        <div class="card">
+          <h2>套餐方案（餐线二级页）</h2>
+          <p class="card-desc">表单模式可视化编辑每条餐线的文字与图片，驱动二级页、首页入口区与导航下拉；保存后前台立即生效。高级模式可编辑原始 JSON。</p>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;margin:6px 0 16px;">
+            <button class="btn btn-primary" id="planNew">＋ 新建餐线</button>
+            <button class="btn" id="planJsonToggle">高级模式（JSON）</button>
+            <button class="btn" id="planPreviewBtn">实时预览</button>
+            <button class="btn" id="planRefreshBtn">刷新列表</button>
+          </div>
+
+          <!-- 表单模式 -->
+          <div id="planFormWrap">
+            <div class="plan-admin">
+              <div class="plan-admin-lines" id="planLineList"></div>
+              <div class="plan-admin-form" id="planLineForm"></div>
+            </div>
+            <div class="plan-admin-preview" id="planPreviewWrap" style="display:none;">
+              <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+                <strong>实时预览（未保存，以当前表单内容为准）</strong>
+                <button class="btn btn-sm" id="planPreviewRefresh">刷新预览</button>
+              </div>
+              <iframe id="planPreviewFrame" title="套餐二级页预览" style="width:100%;height:560px;border:1px solid var(--line);border-radius:12px;background:#fff;"></iframe>
+            </div>
+          </div>
+
+          <!-- 高级 JSON 模式 -->
+          <div id="planJsonWrap" style="display:none;">
+            <div class="notice" style="margin-bottom:12px;">
+              <strong>结构说明：</strong>以 <code>slug</code> 为键的对象。<code>slug</code>：网址标识；<code>name</code>：名称；<code>tagline</code>/<code>sub</code>：主标题/副标题；<code>hero</code>/<code>card</code>：图片路径（留空显示占位）；<code>tags</code>：特性标签；<code>forWhom</code>：适用人群；<code>stages</code>：调理路径；<code>shortPlans</code>：短期体验（days/name/tag/desc/points）；<code>tiers</code>：三档套餐（key/name/tag/desc/img/features/modules）；<code>enabled</code>：是否启用。页面不展示任何金额。
+            </div>
+            <div class="field">
+              <textarea class="textarea" id="planLinesJson" rows="24" spellcheck="false" style="font-family:Consolas,Menlo,monospace;font-size:12.5px;"></textarea>
+            </div>
+            <div style="display:flex;gap:10px;flex-wrap:wrap;">
+              <button class="btn btn-primary" id="planLinesSave">校验并保存</button>
+              <button class="btn" id="planLinesReset">恢复默认（清空）</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 修改密码 -->
+      <div class="tab-panel" id="panel-pwd">
+        <div class="card" style="max-width:480px;">
+          <h2>修改登录密码</h2>
+          <form id="pwdForm">
+            <div class="field"><label for="pOld">原密码</label><input class="input" id="pOld" type="password" autocomplete="current-password"></div>
+            <div class="field"><label for="pNew">新密码（至少 6 位）</label><input class="input" id="pNew" type="password" autocomplete="new-password"></div>
+            <div class="field"><label for="pNew2">重复新密码</label><input class="input" id="pNew2" type="password" autocomplete="new-password"></div>
+            <button class="btn btn-primary" type="submit">修改密码</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script src="/admin/assets/admin.js"></script>
+<script>
+(function () {
+  "use strict";
+  var A = window.Admin;
+  A.setActiveNav("settings");
+
+  document.querySelectorAll(".tab").forEach(function (t) {
+    t.addEventListener("click", function () {
+      document.querySelectorAll(".tab").forEach(function (x) { x.classList.toggle("is-active", x === t); });
+      document.querySelectorAll(".tab-panel").forEach(function (p) { p.classList.remove("is-active"); });
+      document.getElementById("panel-" + t.getAttribute("data-tab")).classList.add("is-active");
+    });
+  });
+
+  var state = null;
+
+  A.get("/admin/api/settings").then(function (d) {
+    state = d;
+    fillBase(d.settings);
+    renderNav(d.nav);
+    document.getElementById("detailsJson").value = JSON.stringify(d.settings.details || null, null, 2);
+    homeTeam = Array.isArray(d.settings.homeTeam) ? d.settings.homeTeam : [];
+    homeSvc = Array.isArray(d.settings.homeServices) ? d.settings.homeServices : [];
+    renderHomeTeamRows();
+    renderHomeSvcRows();
+    planLines = (d.settings.planLines && typeof d.settings.planLines === "object") ? d.settings.planLines : {};
+    planBoot();
+  }).catch(A.toastErr);
+
+  /* ---------- 站点信息 ---------- */
+  function setPreview(img, url) {
+    img.style.display = url ? "inline-block" : "none";
+    if (url) img.src = url;
+  }
+
+  function bindLogoUpload(btn, fileInput, hidden, preview, clearBtn) {
+    btn.addEventListener("click", function () { fileInput.click(); });
+    clearBtn.addEventListener("click", function () {
+      hidden.value = "";
+      setPreview(preview, "");
+      clearBtn.style.display = "none";
+      A.toastOk("已移除，保存后生效");
+    });
+    fileInput.addEventListener("change", function () {
+      var f = fileInput.files[0];
+      if (!f) return;
+      var fd = new FormData();
+      fd.append("file", f);
+      fd.append("category", "general");
+      fetch("/admin/api/upload", {
+        method: "POST",
+        headers: { "X-CSRF-Token": document.querySelector('meta[name="csrf"]').getAttribute("content") },
+        body: fd
+      }).then(function (r) { return r.json(); }).then(function (d) {
+        if (!d.ok) throw new Error(d.error || "上传失败");
+        hidden.value = d.url;
+        setPreview(preview, d.url);
+        clearBtn.style.display = "inline-flex";
+        A.toastOk("上传成功，记得点「保存站点信息」生效");
+      }).catch(function (e) { A.toastErr(e.message); });
+      fileInput.value = "";
+    });
+  }
+
+  bindLogoUpload(document.getElementById("bLogoPick"), document.getElementById("bLogoFile"),
+    document.getElementById("bLogoUrl"), document.getElementById("bLogoPrev"), document.getElementById("bLogoClear"));
+  bindLogoUpload(document.getElementById("bFavPick"), document.getElementById("bFavFile"),
+    document.getElementById("bFavUrl"), document.getElementById("bFavPrev"), document.getElementById("bFavClear"));
+  bindLogoUpload(document.getElementById("bQrPick"), document.getElementById("bQrFile"),
+    document.getElementById("bQrUrl"), document.getElementById("bQrPrev"), document.getElementById("bQrClear"));
+
+  function fillBase(s) {
+    document.getElementById("bSiteName").value = s.siteName || "";
+    document.getElementById("bSiteSub").value = s.siteSub || "";
+    document.getElementById("bLogoUrl").value = s.logoUrl || "";
+    setPreview(document.getElementById("bLogoPrev"), s.logoUrl || "");
+    document.getElementById("bLogoClear").style.display = s.logoUrl ? "inline-flex" : "none";
+    document.getElementById("bFavUrl").value = s.faviconUrl || "";
+    setPreview(document.getElementById("bFavPrev"), s.faviconUrl || "");
+    document.getElementById("bFavClear").style.display = s.faviconUrl ? "inline-flex" : "none";
+    document.getElementById("bQrUrl").value = s.qrUrl || "";
+    setPreview(document.getElementById("bQrPrev"), s.qrUrl || "");
+    document.getElementById("bQrClear").style.display = s.qrUrl ? "inline-flex" : "none";
+    document.getElementById("bSiteName").value = s.siteName || "";
+    document.getElementById("bSiteSub").value = s.siteSub || "";
+    document.getElementById("bPhone").value = s.phone || "";
+    document.getElementById("bWechat").value = s.wechatId || "";
+    document.getElementById("bWechatJump").value = s.wechatJumpUrl || "";
+    document.getElementById("bConsult").value = s.consultUrl || "";
+    document.getElementById("bBooking").value = s.bookingUrl || "";
+    document.getElementById("bMini").value = s.miniProgramUrl || "";
+    document.getElementById("bAddress").value = s.address || "";
+    document.getElementById("bHours").value = s.hours || "";
+    document.getElementById("bFooter").value = s.footerNote || "";
+    document.getElementById("bIcp").value = s.icp || "";
+  }
+
+  document.getElementById("baseForm").addEventListener("submit", function (e) {
+    e.preventDefault();
+    A.post("/admin/api/settings", {
+      siteName: document.getElementById("bSiteName").value,
+      siteSub: document.getElementById("bSiteSub").value,
+      phone: document.getElementById("bPhone").value,
+      wechatId: document.getElementById("bWechat").value,
+      wechatJumpUrl: document.getElementById("bWechatJump").value,
+      consultUrl: document.getElementById("bConsult").value,
+      bookingUrl: document.getElementById("bBooking").value,
+      miniProgramUrl: document.getElementById("bMini").value,
+      address: document.getElementById("bAddress").value,
+      hours: document.getElementById("bHours").value,
+      footerNote: document.getElementById("bFooter").value,
+      icp: document.getElementById("bIcp").value,
+      logoUrl: document.getElementById("bLogoUrl").value,
+      faviconUrl: document.getElementById("bFavUrl").value,
+      qrUrl: document.getElementById("bQrUrl").value
+    }).then(function () { A.toastOk("站点信息已保存"); }).catch(A.toastErr);
+  });
+
+  /* ---------- 导航 ---------- */
+  var SLUG_RE = /^[a-z0-9][a-z0-9-]{0,49}$/;
+
+  function navRowHtml(n, i) {
+    var isHome = n.fixed || n.slug === "top";
+    if (isHome) {
+      return '<div style="display:flex;gap:10px;align-items:center;margin-bottom:8px;padding:8px 10px;background:var(--bg-beige);border-radius:8px;">' +
+        '<span style="color:var(--text-sub);font-size:13px;width:22px;">' + (i + 1) + '</span>' +
+        '<input class="input" style="flex:1.2;" value="首页" disabled>' +
+        '<input class="input" style="flex:1.8;" value="top" disabled title="系统固定项">' +
+        '<span style="color:var(--text-sub);font-size:12.5px;">系统固定 · 置顶</span></div>';
+    }
+    return '<div style="display:flex;gap:10px;align-items:center;margin-bottom:8px;">' +
+      '<span style="color:var(--text-sub);font-size:13px;width:22px;">' + (i + 1) + '</span>' +
+      '<input class="input" style="flex:1.2;" data-nlabel value="' + A.escHtml(n.label) + '" placeholder="菜单名称，如：专家团队">' +
+      '<input class="input" style="flex:1.8;" data-nslug value="' + A.escHtml(n.slug) + '" placeholder="链接标识，如：team">' +
+      '<button class="btn btn-sm" data-nmove="-1">上移</button>' +
+      '<button class="btn btn-sm" data-nmove="1">下移</button>' +
+      '<button class="btn btn-danger btn-sm" data-ndel>删除</button>';
+  }
+
+  function renderNav(nav) {
+    var wrap = document.getElementById("navRows");
+    wrap.innerHTML = "";
+    var rest = (nav || []).filter(function (n) { return !(n.fixed || n.slug === "top"); });
+    var list = [{ id: "nav_home", label: "首页", slug: "top", fixed: true }].concat(rest);
+    list.forEach(function (n, i) {
+      var div = document.createElement("div");
+      div.innerHTML = navRowHtml(n, i);
+      wrap.appendChild(div.firstElementChild);
+    });
+  }
+
+  document.getElementById("navAdd").addEventListener("click", function () {
+    var nav = collectNav();
+    nav.push({ label: "", slug: "" });
+    renderNav(nav);
+  });
+
+  document.getElementById("navRows").addEventListener("click", function (e) {
+    var btn = e.target.closest("[data-ndel],[data-nmove]");
+    if (!btn) return;
+    var nav = collectNav();
+    var idx = Array.prototype.indexOf.call(document.getElementById("navRows").children, btn.closest("div"));
+    if (btn.hasAttribute("data-ndel")) {
+      nav.splice(idx - 1, 1);
+    } else {
+      var dir = Number(btn.getAttribute("data-nmove"));
+      var t = idx - 1 + dir;
+      if (t < 0 || t >= nav.length) return;
+      var tmp = nav[idx - 1]; nav[idx - 1] = nav[t]; nav[t] = tmp;
+    }
+    renderNav(nav);
+  });
+
+  function collectNav() {
+    var rows = document.querySelectorAll("#navRows div");
+    return Array.prototype.map.call(rows, function (r, i) {
+      if (i === 0) return null; /* 首页固定行不参与收集 */
+      return {
+        label: r.querySelector("[data-nlabel]").value.trim(),
+        slug: r.querySelector("[data-nslug]").value.trim()
+      };
+    }).filter(Boolean).filter(function (n) { return n.label || n.slug; });
+  }
+
+  document.getElementById("navSave").addEventListener("click", function () {
+    var nav = collectNav();
+    for (var i = 0; i < nav.length; i++) {
+      if (!nav[i].label) { A.toastErr("第 " + (i + 2) + " 行未填菜单名称"); return; }
+      if (!SLUG_RE.test(nav[i].slug)) {
+        A.toastErr("第 " + (i + 2) + " 行的链接标识不合法：只能用小写字母、数字、短横线（如 team），不能有中文、空格或 #");
+        return;
+      }
+    }
+    A.post("/admin/api/nav", { nav: nav }).then(function (d) {
+      A.toastOk("导航已保存" + (d.nav ? "；若修改了链接标识，图片文件夹已自动改名" : ""));
+      renderNav(d.nav || []);
+    }).catch(A.toastErr);
+  });
+
+  /* ---------- 套餐详情 ---------- */
+  document.getElementById("detailsSave").addEventListener("click", function () {
+    var raw = document.getElementById("detailsJson").value.trim();
+    var parsed = null;
+    if (raw) {
+      try { parsed = JSON.parse(raw); }
+      catch (e) { A.toastErr("JSON 格式有误：" + e.message); return; }
+      if (typeof parsed !== "object" || Array.isArray(parsed)) { A.toastErr("内容应为对象，请检查格式"); return; }
+    }
+    A.post("/admin/api/settings", { details: parsed }).then(function () {
+      A.toastOk("套餐详情已保存");
+    }).catch(A.toastErr);
+  });
+
+  document.getElementById("detailsReset").addEventListener("click", function () {
+    document.getElementById("detailsJson").value = "null";
+    A.post("/admin/api/settings", { details: null }).then(function () {
+      A.toastOk("已恢复默认套餐详情");
+    }).catch(A.toastErr);
+  });
+
+  /* ---------- 首页区块（专家团队 / 服务保障） ---------- */
+  var homeTeam = [];
+  var homeSvc = [];
+  var HOME_ICONS = ["ic-leaf", "ic-heart", "ic-user", "ic-bowl", "ic-spa", "ic-shield", "ic-cup", "ic-truck", "ic-baby", "ic-pulse", "ic-flame", "ic-drop", "ic-star", "ic-award", "ic-badge", "ic-check", "ic-phone", "ic-pin", "ic-clock", "ic-spark", "ic-list", "ic-wechat"];
+
+  function homeIconSelect(v) {
+    return '<select class="input" data-f="icon" style="max-width:180px;">' +
+      HOME_ICONS.map(function (ic) {
+        return '<option value="' + ic + '"' + (ic === (v || "ic-leaf") ? " selected" : "") + '>' + ic.replace("ic-", "") + '</option>';
+      }).join("") + '</select>';
+  }
+
+  function renderHomeTeamRows() {
+    document.getElementById("homeTeamRows").innerHTML = homeTeam.map(function (m, i) {
+      return '<div class="pl-row" data-idx="' + i + '">' +
+        '<span class="stage-no">' + String(i + 1).padStart(2, "0") + '</span>' +
+        homeIconSelect(m.icon) +
+        '<input class="input" data-f="name" value="' + planEsc(m.name) + '" placeholder="姓名 / 职称，如：首席营养师">' +
+        '<button type="button" class="btn btn-sm" data-move-up title="上移">↑</button>' +
+        '<button type="button" class="btn btn-sm" data-move-down title="下移">↓</button>' +
+        '<button type="button" class="btn btn-sm btn-danger" data-del title="删除">×</button>' +
+        '<div class="field full"><label class="mini-label">头衔一句话（卡片副标题）</label><input class="input" data-f="role" value="' + planEsc(m.role) + '" placeholder="如：人社部高级公共营养师 · 6 年+营养研究"></div>' +
+        '<div class="field full"><label class="mini-label">角标（留空不显示，如：核心团队）</label><input class="input" data-f="tag" value="' + planEsc(m.tag) + '" placeholder="核心团队"></div>' +
+        '<div class="field full"><label class="mini-label">正文条目（每行一条）</label><textarea class="input" data-f="items" rows="3" placeholder="本科医学专业，健康行业深耕 6 年余">' + planEsc((m.items || []).join("\n")) + '</textarea></div>' +
+        '<div class="field full"><label class="mini-label">底部标签（每行一条）</label><textarea class="input" data-f="tags" rows="2" placeholder="人社部国家级证书">' + planEsc((m.tags || []).join("\n")) + '</textarea></div>' +
+        '</div>';
+    }).join("");
+    if (!homeTeam.length) document.getElementById("homeTeamRows").innerHTML = '<div class="pl-empty">暂无成员，点下方「＋ 添加团队成员」创建</div>';
+  }
+
+  function renderHomeSvcRows() {
+    document.getElementById("homeSvcRows").innerHTML = homeSvc.map(function (sv, i) {
+      return '<div class="pl-row" data-idx="' + i + '">' +
+        '<span class="stage-no">' + String(i + 1).padStart(2, "0") + '</span>' +
+        homeIconSelect(sv.icon) +
+        '<input class="input" data-f="title" value="' + planEsc(sv.title) + '" placeholder="服务标题，如：专属营养师 1v1">' +
+        '<button type="button" class="btn btn-sm" data-move-up title="上移">↑</button>' +
+        '<button type="button" class="btn btn-sm" data-move-down title="下移">↓</button>' +
+        '<button type="button" class="btn btn-sm btn-danger" data-del title="删除">×</button>' +
+        '<div class="field full"><label class="mini-label">说明文字</label><input class="input" data-f="desc" value="' + planEsc(sv.desc) + '" placeholder="一句话说明"></div>' +
+        '</div>';
+    }).join("");
+    if (!homeSvc.length) document.getElementById("homeSvcRows").innerHTML = '<div class="pl-empty">暂无服务项，点下方「＋ 添加服务项」创建</div>';
+  }
+
+  function collectHomeTeam() {
+    var arr = [];
+    document.querySelectorAll("#homeTeamRows .pl-row").forEach(function (row) {
+      arr.push({
+        icon: row.querySelector('[data-f="icon"]').value,
+        name: row.querySelector('[data-f="name"]').value.trim(),
+        role: row.querySelector('[data-f="role"]').value.trim(),
+        tag: row.querySelector('[data-f="tag"]').value.trim(),
+        items: row.querySelector('[data-f="items"]').value.split("\n").map(function (s) { return s.trim(); }).filter(Boolean),
+        tags: row.querySelector('[data-f="tags"]').value.split("\n").map(function (s) { return s.trim(); }).filter(Boolean)
+      });
+    });
+    return arr.filter(function (m) { return m.name || m.role; });
+  }
+
+  function collectHomeSvc() {
+    var arr = [];
+    document.querySelectorAll("#homeSvcRows .pl-row").forEach(function (row) {
+      arr.push({
+        icon: row.querySelector('[data-f="icon"]').value,
+        title: row.querySelector('[data-f="title"]').value.trim(),
+        desc: row.querySelector('[data-f="desc"]').value.trim()
+      });
+    });
+    return arr.filter(function (s) { return s.title; });
+  }
+
+  function moveHomeItem(list, idx, dir) {
+    var t = idx + dir;
+    if (t < 0 || t >= list.length) return;
+    var tmp = list[idx]; list[idx] = list[t]; list[t] = tmp;
+  }
+
+  /* 首页区块事件 */
+  document.getElementById("homeTeamRows").addEventListener("click", function (e) {
+    var btn = e.target.closest("button[data-move-up],button[data-move-down],button[data-del]");
+    if (!btn) return;
+    var row = btn.closest(".pl-row");
+    var idx = parseInt(row.getAttribute("data-idx"), 10);
+    if (btn.hasAttribute("data-move-up")) moveHomeItem(homeTeam, idx, -1);
+    else if (btn.hasAttribute("data-move-down")) moveHomeItem(homeTeam, idx, 1);
+    else homeTeam.splice(idx, 1);
+    renderHomeTeamRows();
+  });
+  document.getElementById("homeSvcRows").addEventListener("click", function (e) {
+    var btn = e.target.closest("button[data-move-up],button[data-move-down],button[data-del]");
+    if (!btn) return;
+    var row = btn.closest(".pl-row");
+    var idx = parseInt(row.getAttribute("data-idx"), 10);
+    if (btn.hasAttribute("data-move-up")) moveHomeItem(homeSvc, idx, -1);
+    else if (btn.hasAttribute("data-move-down")) moveHomeItem(homeSvc, idx, 1);
+    else homeSvc.splice(idx, 1);
+    renderHomeSvcRows();
+  });
+  document.getElementById("homeTeamAdd").addEventListener("click", function () {
+    homeTeam.push({ icon: "ic-leaf", tag: "", name: "", role: "", items: [], tags: [] });
+    renderHomeTeamRows();
+  });
+  document.getElementById("homeSvcAdd").addEventListener("click", function () {
+    homeSvc.push({ icon: "ic-leaf", title: "", desc: "" });
+    renderHomeSvcRows();
+  });
+  document.getElementById("homeSave").addEventListener("click", function () {
+    A.post("/admin/api/settings", {
+      homeTeam: collectHomeTeam(),
+      homeServices: collectHomeSvc()
+    }).then(function () {
+      A.toastOk("首页区块已保存，前台立即生效");
+    }).catch(A.toastErr);
+  });
+  document.getElementById("homeGoPlans").addEventListener("click", function () {
+    document.querySelector('.tab[data-tab="plans"]').click();
+  });
+
+  /* ============================================================
+   * 套餐方案（表单化编辑）
+   * ============================================================ */
+  var planLines = {};
+  var planCurrent = null;
+  var planJsonMode = false;
+
+  var PL_ICONS = ["ic-flame", "ic-pulse", "ic-leaf", "ic-heart", "ic-spa", "ic-drop", "ic-shield", "ic-bowl"];
+  var PL_TIER_KEYS = [
+    { key: "standard", label: "标准调养" },
+    { key: "custom", label: "定制调理" },
+    { key: "premium", label: "专属私配" }
+  ];
+
+  function planEsc(s) {
+    return String(s == null ? "" : s)
+      .replace(/&/g, "&amp;").replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+  }
+
+  /* 图上传（category=plans） */
+  function bindPlanUpload(btn, fileInput, hidden, preview, clearBtn) {
+    btn.addEventListener("click", function () { fileInput.click(); });
+    clearBtn.addEventListener("click", function () {
+      hidden.value = "";
+      setPreview(preview, "");
+      clearBtn.style.display = "none";
+    });
+    fileInput.addEventListener("change", function () {
+      var f = fileInput.files[0];
+      if (!f) return;
+      var fd = new FormData();
+      fd.append("file", f);
+      fd.append("category", "plans");
+      fetch("/admin/api/upload", {
+        method: "POST",
+        headers: { "X-CSRF-Token": document.querySelector('meta[name="csrf"]').getAttribute("content") },
+        body: fd
+      }).then(function (r) { return r.json(); }).then(function (d) {
+        if (!d.ok) throw new Error(d.error || "上传失败");
+        hidden.value = d.url;
+        setPreview(preview, d.url);
+        clearBtn.style.display = "inline-flex";
+        A.toastOk("图片已上传，记得点「保存当前餐线」");
+      }).catch(function (e) { A.toastErr(e.message); });
+      fileInput.value = "";
+    });
+  }
+
+  function planImgField(id, label) {
+    return '<div class="field full"><label>' + label + '</label>' +
+      '<div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">' +
+      '<img id="' + id + 'Prev" alt="" style="width:74px;height:56px;object-fit:cover;border:1px solid var(--line);border-radius:8px;background:#fff;display:none;">' +
+      '<button type="button" class="btn btn-sm" id="' + id + 'Pick">上传图片</button>' +
+      '<button type="button" class="btn btn-sm btn-danger" id="' + id + 'Clear" style="display:none;">移除</button>' +
+      '<span style="font-size:12px;color:var(--text-sub);">上传后自动转 WebP</span>' +
+      '</div>' +
+      '<input type="hidden" id="' + id + 'Url">' +
+      '<input type="file" id="' + id + 'File" accept=".png,.webp,.jpg,.jpeg,.svg" style="display:none;">' +
+      '</div>';
+  }
+
+  function planChipsEditor(id, values) {
+    var chips = (values || []).map(function (v) {
+      return '<span class="chip-item">' + planEsc(v) + '<i data-chip-del="' + id + '" data-v="' + planEsc(v) + '">×</i></span>';
+    }).join('');
+    return '<div class="chips-editor" id="' + id + '">' + chips +
+      '<input class="chip-input" id="' + id + 'Input" placeholder="输入后回车添加">' +
+      '<button type="button" class="btn btn-sm" data-chip-add="' + id + '">添加</button>' +
+      '</div>';
+  }
+
+  function planStageRows(stages) {
+    return (stages || []).map(function (st, i) {
+      var gals = (st.gallery || []).filter(Boolean);
+      var thumbs = gals.map(function (g) {
+        return '<span class="sg-thumb" data-url="' + planEsc(g) + '"><img src="' + planEsc(g) + '" alt=""><i data-sg-del>×</i></span>';
+      }).join('');
+      return '<div class="pl-row" data-idx="' + i + '">' +
+        '<span class="stage-no">' + String(i + 1).padStart(2, "0") + '</span>' +
+        '<input class="input" data-f="n" value="' + planEsc(st.n) + '" placeholder="阶段名，如：排">' +
+        '<input class="input" data-f="t" value="' + planEsc(st.t) + '" placeholder="周期，如：第一周 · 排">' +
+        '<button type="button" class="btn btn-sm" data-stage-del>×</button>' +
+        '<div class="field full"><label class="mini-label">阶段说明</label><textarea class="input" data-f="d" rows="2" placeholder="阶段说明">' + planEsc(st.d) + '</textarea></div>' +
+        '<div class="field full"><label class="mini-label">代表餐品</label><input class="input" data-f="dish" value="' + planEsc(st.dish || "") + '" placeholder="如：生化汤 · 小米粥"></div>' +
+        '<div class="field full"><label class="mini-label">轮播图（每阶段可传多张，前台自动轮播）</label>' +
+        '<div class="sg-uploader" data-idx="' + i + '">' + thumbs +
+        '<input type="hidden" class="sg-gallery-val" value="' + planEsc(gals.join("|")) + '">' +
+        '<button type="button" class="btn btn-sm" data-stage-img-add>+ 上传图片</button>' +
+        '<input type="file" class="sg-file" accept=".png,.webp,.jpg,.jpeg,.svg" style="display:none;">' +
+        '</div></div>' +
+        '</div>';
+    }).join('');
+  }
+
+  function planShortRows(shorts) {
+    return (shorts || []).map(function (sp, i) {
+      return '<div class="pl-row" data-idx="' + i + '">' +
+        '<input class="input" data-f="days" value="' + planEsc(sp.days) + '" placeholder="天数，如：1 天" style="width:110px;">' +
+        '<input class="input" data-f="name" value="' + planEsc(sp.name) + '" placeholder="名称，如：分娩日应急体验">' +
+        '<input class="input" data-f="tag" value="' + planEsc(sp.tag || "") + '" placeholder="角标，如：应急尝鲜">' +
+        '<button type="button" class="btn btn-sm" data-short-del>×</button>' +
+        '<div class="field full"><textarea class="input" data-f="desc" rows="2" placeholder="一句话介绍">' + planEsc(sp.desc || "") + '</textarea></div>' +
+        '<div class="field full"><label class="mini-label">权益清单（每行一条）</label><textarea class="input" data-f="points" rows="3" placeholder="三菜一汤一主食">' + planEsc((sp.points || []).join("\n")) + '</textarea></div>' +
+        '</div>';
+    }).join('');
+  }
+
+  function planTierEditor(tier, i) {
+    var features = (tier.features || []).map(function (f) {
+      return '<div class="tier-feature"><input class="input" data-f="feat" value="' + planEsc(f) + '"><button type="button" class="btn btn-sm" data-tier-feat-del>×</button></div>';
+    }).join('');
+    var modules = (tier.modules || []).map(function (m, mi) {
+      var rows = (m.items || []).map(function (it) {
+        return '<div class="mod-item"><input class="input" data-mf="n" value="' + planEsc(it.n) + '" placeholder="服务项目"><input class="input" data-mf="d" value="' + planEsc(it.d) + '" placeholder="服务内容"><input class="input" data-mf="c" value="' + planEsc(it.c || "") + '" placeholder="周期适配"><button type="button" class="btn btn-sm" data-mod-item-del>×</button></div>';
+      }).join('');
+      return '<div class="mod-group-ed" data-mi="' + mi + '">' +
+        '<input class="input" data-mf="title" value="' + planEsc(m.title) + '" placeholder="模块标题，如：餐食核心配置">' +
+        '<button type="button" class="btn btn-sm" data-mod-del>删组</button>' +
+        rows +
+        '<button type="button" class="btn btn-sm" data-mod-item-add>+ 添加服务项</button>' +
+        '</div>';
+    }).join('');
+    return '<div class="tier-editor">' +
+      '<div class="tier-editor-head">' +
+      '<span class="tier-editor-tag">' + tier.tag + '</span>' +
+      '<input class="input" data-f="name" value="' + planEsc(tier.name) + '" placeholder="套餐名称">' +
+      '</div>' +
+      '<input class="input" data-f="tag" value="' + planEsc(tier.tag || "") + '" placeholder="角标文字，如：高性价比" style="max-width:180px;">' +
+      '<input class="input" data-f="desc" value="' + planEsc(tier.desc || "") + '" placeholder="一句话卖点">' +
+      planImgField("plTierImg" + i, "套餐卡配图") +
+      '<div class="field full"><label class="mini-label">核心服务项</label>' + features +
+      '<button type="button" class="btn btn-sm" data-tier-feat-add>+ 添加服务项</button></div>' +
+      '<details class="tier-mod-editor"><summary>服务明细模块（查看/编辑）</summary>' + modules +
+      '<button type="button" class="btn btn-sm" data-mod-add>+ 添加模块组</button></details>' +
+      '</div>';
+  }
+
+  function renderPlanLineList() {
+    var list = document.getElementById("planLineList");
+    var keys = Object.keys(planLines);
+    if (!keys.length) {
+      list.innerHTML = '<div class="pl-empty">暂无餐线，点右上角「＋ 新建餐线」创建</div>';
+      return;
+    }
+    list.innerHTML = keys.map(function (k) {
+      var l = planLines[k] || {};
+      return '<button type="button" class="pl-line' + (k === planCurrent ? " is-on" : "") + '" data-open="' + k + '">' +
+        '<span class="pl-dot' + (l.enabled === false ? " is-off" : "") + '"></span>' +
+        '<span class="pl-name">' + planEsc(l.name || k) + '</span>' +
+        '</button>';
+    }).join('');
+    if (!planCurrent || !planLines[planCurrent]) planCurrent = keys[0];
+  }
+
+  function collectPlanLine() {
+    var root = document.getElementById("planLineForm");
+    if (!root) return null;
+    var get = function (id) { var el = document.getElementById(id); return el ? el.value.trim() : ""; };
+    var line = {
+      slug: get("plSlug") || planCurrent,
+      name: get("plName"),
+      tagline: get("plTagline"),
+      sub: get("plSub"),
+      hero: get("plHeroUrl"),
+      card: get("plCardUrl"),
+      enabled: document.getElementById("plEnabled").checked,
+      tags: [],
+      forWhom: [],
+      stages: [],
+      shortPlans: [],
+      tiers: []
+    };
+    Array.prototype.forEach.call(root.querySelectorAll("#plTags .chip-item"), function (c) {
+      line.tags.push(c.childNodes[0].textContent);
+    });
+    Array.prototype.forEach.call(root.querySelectorAll("#plForWhom .chip-item"), function (c) {
+      line.forWhom.push(c.childNodes[0].textContent);
+    });
+    root.querySelectorAll(".pl-row[data-idx]").forEach(function (row) {
+      if (row.closest("#plStages")) {
+        var gv = row.querySelector(".sg-gallery-val");
+        line.stages.push({
+          icon: "ic-leaf",
+          n: row.querySelector('[data-f="n"]').value.trim(),
+          t: row.querySelector('[data-f="t"]').value.trim(),
+          d: row.querySelector('[data-f="d"]').value.trim(),
+          dish: row.querySelector('[data-f="dish"]').value.trim(),
+          gallery: gv ? gv.value.split("|").map(function (s) { return s.trim(); }).filter(Boolean) : []
+        });
+      } else {
+        line.shortPlans.push({
+          days: row.querySelector('[data-f="days"]').value.trim(),
+          name: row.querySelector('[data-f="name"]').value.trim(),
+          tag: row.querySelector('[data-f="tag"]').value.trim(),
+          desc: row.querySelector('[data-f="desc"]').value.trim(),
+          points: row.querySelector('[data-f="points"]').value.split("\n").map(function (s) { return s.trim(); }).filter(Boolean)
+        });
+      }
+    });
+    root.querySelectorAll(".tier-editor").forEach(function (tierEl, i) {
+      var tier = {
+        key: PL_TIER_KEYS[i] ? PL_TIER_KEYS[i].key : "t" + i,
+        name: tierEl.querySelector('[data-f="name"]').value.trim(),
+        tag: tierEl.querySelector('[data-f="tag"]').value.trim(),
+        desc: tierEl.querySelector('[data-f="desc"]').value.trim(),
+        img: document.getElementById("plTierImg" + i + "Url").value.trim(),
+        features: [],
+        modules: []
+      };
+      tierEl.querySelectorAll('[data-f="feat"]').forEach(function (f) { if (f.value.trim()) tier.features.push(f.value.trim()); });
+      tierEl.querySelectorAll(".mod-group-ed").forEach(function (g) {
+        var m = { title: g.querySelector('[data-mf="title"]').value.trim(), items: [] };
+        g.querySelectorAll(".mod-item").forEach(function (it) {
+          m.items.push({
+            n: it.querySelector('[data-mf="n"]').value.trim(),
+            d: it.querySelector('[data-mf="d"]').value.trim(),
+            c: it.querySelector('[data-mf="c"]').value.trim()
+          });
+        });
+        m.items = m.items.filter(function (x) { return x.n || x.d; });
+        if (m.title || m.items.length) tier.modules.push(m);
+      });
+      line.tiers.push(tier);
+    });
+    return line;
+  }
+
+  function renderPlanForm() {
+    var l = planLines[planCurrent] || {};
+    var isNew = !planLines[planCurrent];
+    var tiersHtml = (l.tiers && l.tiers.length ? l.tiers : [{ key: "standard", name: "标准调养套餐", tag: "高性价比" }, { key: "custom", name: "定制调理套餐", tag: "人气之选" }, { key: "premium", name: "专属私配套餐", tag: "尊享私配" }]).map(planTierEditor).join("");
+    var html =
+      '<div class="pl-section"><h4>基本信息</h4><div class="pl-grid2">' +
+      '<div class="field"><label>网址（小写英文，保存后请勿随意改动）</label><input class="input" id="plSlug" value="' + planEsc(l.slug || "") + '" ' + (isNew ? "" : "readonly") + '></div>' +
+      '<div class="field"><label>启用状态</label><label style="display:flex;align-items:center;gap:8px;font-weight:400;"><input type="checkbox" id="plEnabled" ' + (l.enabled !== false ? "checked" : "") + '> 前台展示（关闭后页面/入口/导航隐藏）</label></div>' +
+      '<div class="field"><label>名称</label><input class="input" id="plName" value="' + planEsc(l.name || "") + '" placeholder="如：月子餐"></div>' +
+      '<div class="field"><label>主标题（hero 大字）</label><input class="input" id="plTagline" value="' + planEsc(l.tagline || "") + '" placeholder="如：排 · 调 · 补 · 养"></div>' +
+      '<div class="field full"><label>副标题（一句话介绍）</label><input class="input" id="plSub" value="' + planEsc(l.sub || "") + '" placeholder="如：一人一方，分型配餐"></div>' +
+      planImgField("plHero", "主图（hero 页首大图）") +
+      planImgField("plCard", "入口卡图（首页入口卡；留空自动用主图）") +
+      '<div class="field full"><label>特性标签</label>' + planChipsEditor("plTags", l.tags) + '</div>' +
+      '<div class="field full"><label>适用人群</label>' + planChipsEditor("plForWhom", l.forWhom) + '</div>' +
+      '</div></div>' +
+      '<div class="pl-section"><h4>调理路径（stages）<button type="button" class="btn btn-sm" id="plStageAdd">+ 添加阶段</button></h4><div id="plStages">' + planStageRows(l.stages) + '</div></div>' +
+      '<div class="pl-section"><h4>短期体验（shortPlans）<button type="button" class="btn btn-sm" id="plShortAdd">+ 添加档位</button></h4><div id="plShorts">' + planShortRows(l.shortPlans) + '</div></div>' +
+      '<div class="pl-section"><h4>三档套餐（tiers）</h4><div id="plTiers">' + tiersHtml + '</div></div>' +
+      '<div class="pl-foot">' +
+      '<button type="button" class="btn btn-primary" id="plSave">保存当前餐线</button>' +
+      (isNew ? '' : '<button type="button" class="btn btn-danger" id="plDeleteLine">删除这条餐线</button>') +
+      '<span class="hint">保存后前台立即生效</span>' +
+      '</div>';
+    document.getElementById("planLineForm").innerHTML = html;
+    /* 绑定图片上传 */
+    [["plHero", "plHeroUrl", "plHeroPrev", "plHeroClear"], ["plCard", "plCardUrl", "plCardPrev", "plCardClear"]].forEach(function (p) {
+      bindPlanUpload(document.getElementById(p[0] + "Pick"), document.getElementById(p[0] + "File"),
+        document.getElementById(p[1]), document.getElementById(p[2]), document.getElementById(p[3]));
+      document.getElementById(p[1]).value = l[p[0] === "plHero" ? "hero" : "card"] || "";
+      setPreview(document.getElementById(p[2]), l[p[0] === "plHero" ? "hero" : "card"] || "");
+      document.getElementById(p[3]).style.display = l[p[0] === "plHero" ? "hero" : "card"] ? "inline-flex" : "none";
+    });
+    [0, 1, 2].forEach(function (i) {
+      var tier = (l.tiers || [])[i] || {};
+      var imgUrl = tier.img || "";
+      document.getElementById("plTierImg" + i + "Url").value = imgUrl;
+      setPreview(document.getElementById("plTierImg" + i + "Prev"), imgUrl);
+      document.getElementById("plTierImg" + i + "Clear").style.display = imgUrl ? "inline-flex" : "none";
+      bindPlanUpload(document.getElementById("plTierImg" + i + "Pick"), document.getElementById("plTierImg" + i + "File"),
+        document.getElementById("plTierImg" + i + "Url"), document.getElementById("plTierImg" + i + "Prev"), document.getElementById("plTierImg" + i + "Clear"));
+    });
+  }
+
+  function planBoot() {
+    renderPlanLineList();
+    renderPlanForm();
+    /* 地址栏直达：?tab=plans&line=xxx */
+    var q = new URLSearchParams(location.search);
+    if (q.get("tab") === "plans") {
+      var t = document.querySelector('.tab[data-tab="plans"]');
+      if (t) t.click();
+      if (q.get("line") && planLines[q.get("line")]) planCurrent = q.get("line");
+      renderPlanLineList();
+      renderPlanForm();
+    }
+  }
+
+  /* 列表/表单事件委托 */
+  document.getElementById("planLineList").addEventListener("click", function (e) {
+    var open = e.target.closest("[data-open]");
+    if (open) {
+      planCurrent = open.getAttribute("data-open");
+      renderPlanLineList();
+      renderPlanForm();
+    }
+  });
+
+  document.getElementById("planLineForm").addEventListener("click", function (e) {
+    var t = e.target;
+    if (t.closest("#plStageAdd")) {
+      var cur = collectPlanLine() || {};
+      cur.stages = cur.stages || [];
+      cur.stages.push({ icon: "ic-leaf", n: "", t: "", d: "", dish: "" });
+      planLines[planCurrent] = cur;
+      renderPlanForm();
+      return;
+    }
+    if (t.closest("#plShortAdd")) {
+      var cur = collectPlanLine() || {};
+      cur.shortPlans = cur.shortPlans || [];
+      cur.shortPlans.push({ days: "", name: "", tag: "", desc: "", points: [] });
+      planLines[planCurrent] = cur;
+      renderPlanForm();
+      return;
+    }
+    if (t.closest("[data-stage-del]")) {
+      var cur = collectPlanLine() || {};
+      cur.stages.splice(parseInt(t.closest(".pl-row").getAttribute("data-idx"), 10), 1);
+      planLines[planCurrent] = cur;
+      renderPlanForm();
+      return;
+    }
+    if (t.closest("[data-short-del]")) {
+      var cur = collectPlanLine() || {};
+      cur.shortPlans.splice(parseInt(t.closest(".pl-row").getAttribute("data-idx"), 10), 1);
+      planLines[planCurrent] = cur;
+      renderPlanForm();
+      return;
+    }
+    if (t.closest("[data-tier-feat-add]")) {
+      var tierEl = t.closest(".tier-editor");
+      var div = document.createElement("div");
+      div.className = "tier-feature";
+      div.innerHTML = '<input class="input" data-f="feat" value=""><button type="button" class="btn btn-sm" data-tier-feat-del>×</button>';
+      t.parentNode.insertBefore(div, t);
+      return;
+    }
+    if (t.closest("[data-tier-feat-del]")) {
+      t.closest(".tier-feature").remove();
+      return;
+    }
+    if (t.closest("[data-mod-add]")) {
+      var modWrap = t.closest(".tier-mod-editor");
+      var g = document.createElement("div");
+      g.className = "mod-group-ed";
+      g.innerHTML = '<input class="input" data-mf="title" value="" placeholder="模块标题，如：餐食核心配置"><button type="button" class="btn btn-sm" data-mod-del>删组</button><button type="button" class="btn btn-sm" data-mod-item-add>+ 添加服务项</button>';
+      t.parentNode.insertBefore(g, t);
+      return;
+    }
+    if (t.closest("[data-mod-del]")) {
+      t.closest(".mod-group-ed").remove();
+      return;
+    }
+    if (t.closest("[data-mod-item-add]")) {
+      var g2 = t.closest(".mod-group-ed");
+      var it = document.createElement("div");
+      it.className = "mod-item";
+      it.innerHTML = '<input class="input" data-mf="n" value="" placeholder="服务项目"><input class="input" data-mf="d" value="" placeholder="服务内容"><input class="input" data-mf="c" value="" placeholder="周期适配"><button type="button" class="btn btn-sm" data-mod-item-del>×</button>';
+      g2.insertBefore(it, t);
+      return;
+    }
+    if (t.closest("[data-mod-item-del]")) {
+      t.closest(".mod-item").remove();
+      return;
+    }
+    if (t.closest("[data-stage-img-add]")) {
+      var up = t.closest(".sg-uploader");
+      if (up) up.querySelector(".sg-file").click();
+      return;
+    }
+    if (t.closest("[data-sg-del]")) {
+      var thumb = t.closest(".sg-thumb");
+      var uploader = thumb.closest(".sg-uploader");
+      var gv = uploader.querySelector(".sg-gallery-val");
+      var url = thumb.getAttribute("data-url");
+      gv.value = gv.value.split("|").filter(function (x) { return x && x !== url; }).join("|");
+      thumb.remove();
+      return;
+    }
+    if (t.closest("[data-chip-add]")) {
+      var id = t.getAttribute("data-chip-add");
+      var inp = document.getElementById(id + "Input");
+      var v = inp.value.trim();
+      if (!v) return;
+      var host = document.getElementById(id);
+      var ch = document.createElement("span");
+      ch.className = "chip-item";
+      ch.innerHTML = A.escHtml(v) + '<i data-chip-del="' + id + '" data-v="' + A.escHtml(v) + '">×</i>';
+      host.insertBefore(ch, inp);
+      inp.value = "";
+      return;
+    }
+    if (t.closest("[data-chip-del]")) {
+      t.closest(".chip-item").remove();
+      return;
+    }
+  });
+
+  document.getElementById("planLineForm").addEventListener("keydown", function (e) {
+    if (e.key === "Enter" && e.target.classList && e.target.classList.contains("chip-input")) {
+      e.preventDefault();
+      e.target.parentNode.querySelector("[data-chip-add]").click();
+    }
+  });
+
+  /* 阶段轮播图上传（change 委托） */
+  document.getElementById("planLineForm").addEventListener("change", function (e) {
+    var f = e.target;
+    if (!f.classList || !f.classList.contains("sg-file")) return;
+    var file = f.files[0];
+    if (!file) return;
+    var uploader = f.closest(".sg-uploader");
+    var fd = new FormData();
+    fd.append("file", file);
+    fd.append("category", "plans");
+    fetch("/admin/api/upload", {
+      method: "POST",
+      headers: { "X-CSRF-Token": document.querySelector('meta[name="csrf"]').getAttribute("content") },
+      body: fd
+    }).then(function (r) { return r.json(); }).then(function (d) {
+      if (!d.ok) throw new Error(d.error || "上传失败");
+      var gv = uploader.querySelector(".sg-gallery-val");
+      var arr = gv.value.split("|").filter(Boolean);
+      arr.push(d.url);
+      gv.value = arr.join("|");
+      var sp = document.createElement("span");
+      sp.className = "sg-thumb";
+      sp.setAttribute("data-url", d.url);
+      sp.innerHTML = '<img src="' + d.url + '" alt=""><i data-sg-del>×</i>';
+      uploader.insertBefore(sp, uploader.querySelector("[data-stage-img-add]"));
+      A.toastOk("图片已加入轮播，保存当前餐线后生效");
+    }).catch(function (err) { A.toastErr(err.message); });
+    f.value = "";
+  });
+
+  /* 保存 / 删除当前餐线 */
+  document.getElementById("planLineForm").addEventListener("click", function (e) {
+    var t = e.target;
+    if (t.closest("#plSave")) {
+      var line = collectPlanLine();
+      if (!line || !line.name) { A.toastErr("请填写餐线名称"); return; }
+      var slug = (line.slug || "").trim().toLowerCase();
+      if (!/^[a-z0-9][a-z0-9-]{0,49}$/.test(slug)) { A.toastErr("网址只能用小写字母、数字、短横线"); return; }
+      if (slug !== planCurrent && planLines[slug]) { A.toastErr("网址「" + slug + "」已被其他餐线使用"); return; }
+      if (slug !== planCurrent) {
+        delete planLines[planCurrent];
+        planCurrent = slug;
+      }
+      line.slug = slug;
+      planLines[slug] = line;
+      A.post("/admin/api/settings", { planLines: planLines }).then(function () {
+        A.toastOk("餐线「" + line.name + "」已保存，前台已生效");
+        renderPlanLineList();
+        renderPlanForm();
+        if (planPreviewOpen) refreshPlanPreview();
+      }).catch(A.toastErr);
+      return;
+    }
+    if (t.closest("#plDeleteLine")) {
+      if (!window.confirm("确定删除餐线「" + planCurrent + "」？前台该二级页、首页入口、导航下拉将同时消失。")) return;
+      delete planLines[planCurrent];
+      planCurrent = Object.keys(planLines)[0] || null;
+      A.post("/admin/api/settings", { planLines: planLines }).then(function () {
+        A.toastOk("已删除");
+        renderPlanLineList();
+        renderPlanForm();
+      }).catch(A.toastErr);
+      return;
+    }
+  });
+
+  /* 新建餐线 */
+  document.getElementById("planNew").addEventListener("click", function () {
+    var slug = window.prompt("请输入新餐线的网址标识（小写英文/数字/短横线，如 yunfu）：", "");
+    if (slug === null) return;
+    slug = slug.trim().toLowerCase();
+    if (!/^[a-z0-9][a-z0-9-]{0,49}$/.test(slug)) { A.toastErr("网址只能用小写字母、数字、短横线"); return; }
+    if (planLines[slug]) { A.toastErr("网址「" + slug + "」已存在"); return; }
+    planLines[slug] = {
+      slug: slug, name: "新餐线", tagline: "", sub: "", hero: "", card: "",
+      enabled: true, tags: [], forWhom: [], stages: [], shortPlans: [], tiers: []
+    };
+    planCurrent = slug;
+    renderPlanLineList();
+    renderPlanForm();
+    A.toastOk("已创建空餐线，请填写内容后保存");
+  });
+
+  /* 刷新列表 */
+  document.getElementById("planRefreshBtn").addEventListener("click", function () {
+    A.get("/admin/api/settings").then(function (d) {
+      planLines = (d.settings.planLines && typeof d.settings.planLines === "object") ? d.settings.planLines : {};
+      if (!planLines[planCurrent]) planCurrent = Object.keys(planLines)[0] || null;
+      renderPlanLineList();
+      renderPlanForm();
+      A.toastOk("已刷新");
+    }).catch(A.toastErr);
+  });
+
+  /* 实时预览 */
+  var planPreviewOpen = false;
+  function refreshPlanPreview() {
+    var line = collectPlanLine();
+    if (!line) return;
+    A.api("/admin/api/plan-preview", { method: "POST", body: { line: line } }).then(function (d) {
+      document.getElementById("planPreviewFrame").srcdoc = d.html;
+    }).catch(function (e) { A.toastErr(e.message || "预览失败"); });
+  }
+  document.getElementById("planPreviewBtn").addEventListener("click", function () {
+    planPreviewOpen = !planPreviewOpen;
+    document.getElementById("planPreviewWrap").style.display = planPreviewOpen ? "block" : "none";
+    if (planPreviewOpen) refreshPlanPreview();
+  });
+  document.getElementById("planPreviewRefresh").addEventListener("click", refreshPlanPreview);
+
+  /* JSON 高级模式 */
+  document.getElementById("planJsonToggle").addEventListener("click", function () {
+    planJsonMode = !planJsonMode;
+    document.getElementById("planFormWrap").style.display = planJsonMode ? "none" : "block";
+    document.getElementById("planJsonWrap").style.display = planJsonMode ? "block" : "none";
+    if (planJsonMode) {
+      document.getElementById("planLinesJson").value = JSON.stringify(planLines, null, 2);
+      this.textContent = "返回表单模式";
+    } else {
+      this.textContent = "高级模式（JSON）";
+    }
+  });
+
+  document.getElementById("planLinesSave").addEventListener("click", function () {
+    var raw = document.getElementById("planLinesJson").value.trim();
+    var parsed = null;
+    if (raw) {
+      try { parsed = JSON.parse(raw); }
+      catch (e) { A.toastErr("JSON 格式有误：" + e.message); return; }
+      if (typeof parsed !== "object" || Array.isArray(parsed)) { A.toastErr("内容应为对象（以 slug 为键），请检查格式"); return; }
+      var keys = Object.keys(parsed);
+      if (!keys.length) { A.toastErr("至少保留一条餐线，或点「恢复默认」清空"); return; }
+      for (var i = 0; i < keys.length; i++) {
+        if (!/^[a-z0-9][a-z0-9-]{0,49}$/.test(keys[i])) {
+          A.toastErr("键「" + keys[i] + "」不合法：只能用小写字母、数字、短横线"); return;
+        }
+        if (!parsed[keys[i]].name) { A.toastErr("餐线「" + keys[i] + "」缺少 name 字段"); return; }
+      }
+    }
+    A.post("/admin/api/settings", { planLines: parsed }).then(function () {
+      A.toastOk("套餐方案已保存，前台二级页与入口区已更新");
+      planLines = parsed || {};
+      if (!planLines[planCurrent]) planCurrent = Object.keys(planLines)[0] || null;
+      renderPlanLineList();
+      renderPlanForm();
+    }).catch(A.toastErr);
+  });
+
+  document.getElementById("planLinesReset").addEventListener("click", function () {
+    document.getElementById("planLinesJson").value = "{}";
+    A.post("/admin/api/settings", { planLines: null }).then(function () {
+      A.toastOk("已清空套餐方案（二级页将下线）");
+    }).catch(A.toastErr);
+  });
+
+  /* ---------- 修改密码 ---------- */
+  document.getElementById("pwdForm").addEventListener("submit", function (e) {
+    e.preventDefault();
+    var n = document.getElementById("pNew").value;
+    if (n !== document.getElementById("pNew2").value) {
+      A.toastErr("两次输入的新密码不一致");
+      return;
+    }
+    A.post("/admin/api/password", { old: document.getElementById("pOld").value, new: n }).then(function () {
+      A.toastOk("密码已修改，下次登录请使用新密码");
+      document.getElementById("pwdForm").reset();
+    }).catch(A.toastErr);
+  });
+})();
+</script>
+</body>
+</html>
