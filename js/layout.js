@@ -164,7 +164,7 @@
       showToast("微信号已复制：" + wx + "，打开微信搜索即可添加");
     }
   }
-  ["copyWx", "copyWx2", "mctaWx", "modalCopyWx", "quoteCopyWx"].forEach(function (id) {
+  ["copyWx", "copyWx2", "mctaWx", "modalCopyWx", "quoteCopyWx", "wxId"].forEach(function (id) {
     var el = document.getElementById(id);
     if (el) el.addEventListener("click", copyWechat);
   });

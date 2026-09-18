@@ -189,21 +189,6 @@
 .mod-cycle { grid-column: 1 / -1; font-size: 11.5px; color: var(--tiffany-deep); background: var(--tiffany-soft); border-radius: 8px; padding: 5px 10px; line-height: 1.5; }
 
 /* ---------- 移动端适配 ---------- */
-@media (max-width: 920px) {
-  .plan-hero { padding: 64px 0 56px; }
-  .plan-hero-inner { grid-template-columns: 1fr; gap: 26px; }
-  .plan-hero-copy h1 { font-size: 32px; }
-  .plan-hero-media { order: -1; }
-  .plan-hero-media img, .plan-hero-ph { max-width: 100%; }
-  .plan-entry-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
-  .forwhom-grid { grid-template-columns: repeat(2, 1fr); }
-}
-@media (max-width: 640px) {
-  .plan-entry-grid { grid-template-columns: 1fr; max-width: 420px; margin: 0 auto; }
-  .forwhom-grid { grid-template-columns: 1fr; }
-  .mod-row { grid-template-columns: 1fr; gap: 4px; }
-  .mod-cycle { grid-column: 1; }
-}
 
 /* ============================================================
  * 版式优化 V2（2026-09-17）：调理路径去图标+紧凑+轮播 / 咨询区间距 / 联系区标题背景与按钮色
@@ -266,11 +251,6 @@
   transition: all 0.25s ease; display: block;
 }
 .sg-dots i.is-on { width: 18px; border-radius: 999px; background: #fff; }
-@media (max-width: 640px) {
-  .stage-card { flex-direction: column; align-items: stretch; gap: 14px; }
-  .stage-gallery { width: 100%; max-width: 100%; }
-  .sg-slide img { height: 200px; }
-}
 
 /* ---------- 首页三区自动吸附布局：每排 3 个，超出自动转行，不足自动拉伸填满 ---------- */
 .plan-entry-grid, .team-core, .service-grid {

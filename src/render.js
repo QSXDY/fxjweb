@@ -1,4 +1,4 @@
-/* ============================================================
+﻿/* ============================================================
  * 福鲜家 CMS · 前台页面渲染
  * 共享布局（头部/页脚/图标库）由站点数据渲染；
  * 页面正文来自数据库，正文中的 data-widget 占位符被替换为
@@ -213,8 +213,8 @@ function renderFooter(s) {
     '<footer class="site-footer">\n' +
     '  <div class="container footer-inner">\n' +
     '    <p class="footer-brand">' + esc(s.siteName) + ' · ' + esc(s.siteSub) + '</p>\n' +
-    '    <p class="footer-links">电话 ' + esc(fmtPhone(s.phone)) + ' · 微信 ' + esc(s.wechatId) + ' · ' + esc(s.address) + '</p>\n' +
-    '    <p class="footer-note">' + esc(s.footerNote) + '</p>\n' +
+    '    <p class="footer-links">电话 ' + esc(fmtPhone(s.phone)) + ' · 微信 ' + esc(s.wechatId) + '<span class="m-sep"> · </span>' + esc(s.address) + '</p>\n' +
+    '    <p class="footer-note">' + esc(s.footerNote).replace('｜', '<span class="m-sep"> ｜ </span>') + '</p>\n' +
     '    <p class="footer-copy">© <span id="year"></span> ' + esc(s.siteName) + ' · 用心做好每一餐</p>\n' +
     (s.icp ? '    <p class="footer-icp"><a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener noreferrer">' + esc(s.icp) + '</a></p>\n' : '') +
     '  </div>\n' +
@@ -414,7 +414,7 @@ function renderTiers(tiers, phone) {
       '<div class="plan-card' + (t.key === 'premium' ? ' plan-featured' : '') + '">' +
       (t.img
         ? '<div class="plan-media"><img src="' + esc(t.img) + '" alt="' + esc(t.name) + '" loading="lazy" decoding="async"><span class="plan-tag">' + esc(t.tag || '') + '</span></div>'
-        : '<div class="plan-tag plan-tag-flat">' + esc(t.tag || '') + '</div>') +
+        : '') +
       '<div class="plan-body">' +
       '<h3>' + esc(t.name) + '</h3>' +
       '<p class="plan-desc">' + esc(t.desc || '') + '</p>' +
@@ -667,6 +667,7 @@ function renderPage(page) {
     '<link rel="stylesheet" href="/css/style.css?v=' + ASSET_REV + '">\n' +
     '<link rel="stylesheet" href="/css/plans-extra.css?v=' + ASSET_REV + '">\n' +
     '<link rel="stylesheet" href="/css/widget.css?v=' + ASSET_REV + '">\n' +
+    '<link rel="stylesheet" href="/css/mobile.css?v=' + ASSET_REV + '">\n' +
     siteConfigScript(s) + '\n' +
     scripts + '\n' +
     css + '\n' +
