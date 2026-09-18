@@ -537,7 +537,7 @@ function renderContact(s) {
     '<h2 class="sec-sub">联系我们</h2></div>' +
     '<div class="contact-box">' +
     '<div class="contact-info">' +
-    '<div class="contact-lead">' + esc(s.siteName) + '</div>' +
+    '<h2 class="contact-lead">' + esc(s.siteName) + '</h2>' +
     '<div class="contact-list">' +
     '<p><strong>咨询电话</strong><a href="tel:' + esc(s.phone) + '">' + esc(fmtPhone(s.phone)) + '</a></p>' +
     '<p><strong>微信号</strong><span>' + esc(s.wechatId) + '</span></p>' +
