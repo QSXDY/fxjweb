@@ -679,6 +679,7 @@ function renderPage(page) {
     renderHeader(s, d.nav) + '\n' +
     '<main id="top">\n' + body + '\n</main>\n' +
     renderFooter(s) + '\n' +
+    '<script>(function(){var h=document.querySelector(".hero");if(h){h.style.height=window.innerHeight+"px";h.style.minHeight="0";}})();</script>' + 
     '</body>\n</html>'
   );
 }

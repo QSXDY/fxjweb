@@ -1,4 +1,7 @@
-﻿/* ============================================================
+﻿/* 汉堡菜单按钮（默认隐藏，移动端显示） */
+.menu-toggle { display: none; }
+
+/* ============================================================
    福鲜家 CMS · 后台管理界面样式
    品牌色板：蒂芙尼青蓝 / 烫金浅金 / 清新绿 / 米色
    ============================================================ */
@@ -427,13 +430,13 @@ table.list-table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
   background: #fff;
   border-radius: 12px;
   box-shadow: 0 2px 8px rgb(0 0 0 / 8%);
-  padding: 32px;
+  padding: 64px 32px;
   box-sizing: border-box;
 }
 
 .login-logo-row {
   display: flex; flex-direction: row; align-items: center; justify-content: center;
-  text-align: center; margin-bottom: 24px; gap: 12px;
+  text-align: center; margin-bottom: 36px; gap: 12px;
 }
 
 .login-logo-box {
@@ -454,7 +457,7 @@ table.list-table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
 .login-form { width: 100%; }
 
 .login-control-group {
-  position: relative; margin-bottom: 20px; display: flex; align-items: center; width: 100%;
+  position: relative; margin-bottom: 28px; display: flex; align-items: center; width: 100%;
 }
 
 .login-input-icon {

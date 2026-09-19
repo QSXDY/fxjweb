@@ -933,16 +933,52 @@
         "sub": "数据化定制热量 · 药食同源减脂 · 中式热餐",
         "hero": "/uploads/plans/2026-09/1789648549225-3a92234f.webp",
         "card": "/uploads/plans/2026-09/1789648549225-3a92234f.webp",
+        "enabled": true,
         "tags": [
-          "热量定制 1200/1500/1800 大卡",
-          "支持生酮/素食/无麸质",
-          "每周食谱更新"
+          "每周食谱更新",
+          "热量定制",
+          "生酮/素食/无麸质"
         ],
         "forWhom": [
           "久坐上班族",
           "产后塑形人群",
           "体重管理需求",
           "健身爱好者"
+        ],
+        "stages": [
+          {
+            "icon": "ic-leaf",
+            "n": "启动适应",
+            "t": "第 1-2 周 · 适应启动",
+            "d": "热量分级启动，让身体平稳过渡到低卡高蛋白饮食节奏",
+            "dish": "代表餐品 · 三文鱼藜麦沙拉 · 鸡胸时蔬 · 燕麦粥",
+            "gallery": [
+              "/uploads/plans/2026-09/kongzhi_s1_a.webp",
+              "/uploads/plans/2026-09/kongzhi_s1_b.webp"
+            ]
+          },
+          {
+            "icon": "ic-leaf",
+            "n": "平台突破",
+            "t": "第 3-4 周 · 平台突破",
+            "d": "数据化复盘，调整宏量营养比例，科学突破平台期",
+            "dish": "代表餐品 · 清蒸鳕鱼 · 杂粮饭 · 牛油果",
+            "gallery": [
+              "/uploads/plans/2026-09/kongzhi_s2_a.webp",
+              "/uploads/plans/2026-09/kongzhi_s2_b.webp"
+            ]
+          },
+          {
+            "icon": "ic-leaf",
+            "n": "巩固维持",
+            "t": "第 5 周起 · 巩固维持",
+            "d": "逐步恢复热量弹性，建立可持续的健康饮食习惯",
+            "dish": "代表餐品 · 香煎鸡胸 · 时蔬全麦 · 无糖酸奶",
+            "gallery": [
+              "/uploads/plans/2026-09/kongzhi_s3_a.webp",
+              "/uploads/plans/2026-09/kongzhi_s3_b.webp"
+            ]
+          }
         ],
         "shortPlans": [
           {
@@ -985,6 +1021,7 @@
             "name": "标准调养套餐",
             "tag": "高性价比",
             "desc": "固定热量档 · 营养透明 · 每周换新",
+            "img": "/uploads/plans/2026-09/1789650003969-1ab0ff8f.webp",
             "features": [
               "1200/1500/1800 大卡固定热量档",
               "每餐热量营养成分透明公示",
@@ -1046,14 +1083,14 @@
                   }
                 ]
               }
-            ],
-            "img": "/uploads/plans/2026-09/1789650003969-1ab0ff8f.webp"
+            ]
           },
           {
             "key": "custom",
             "name": "定制调理套餐",
             "tag": "人气之选",
             "desc": "数据化定制 · 每周复盘 · 营养师 1v1",
+            "img": "/uploads/plans/2026-09/1789650005575-14f85d38.webp",
             "features": [
               "按体测数据定热量，分平台期/突破期",
               "药食同源减脂消水肿食材",
@@ -1120,14 +1157,14 @@
                   }
                 ]
               }
-            ],
-            "img": "/uploads/plans/2026-09/1789650005575-14f85d38.webp"
+            ]
           },
           {
             "key": "premium",
             "name": "专属私配套餐",
             "tag": "尊享私配",
             "desc": "全定制食谱 · 每日监督 · 签约达标返现",
+            "img": "/uploads/plans/2026-09/1789650006976-1261c4ce.webp",
             "features": [
               "全量个性化定制，支持生酮/素食/无麸质",
               "三文鱼牛油果藜麦优质食材",
@@ -1199,46 +1236,9 @@
                   }
                 ]
               }
-            ],
-            "img": "/uploads/plans/2026-09/1789650006976-1261c4ce.webp"
-          }
-        ],
-        "stages": [
-          {
-            "icon": "ic-leaf",
-            "n": "启动适应",
-            "t": "第 1-2 周 · 适应启动",
-            "d": "热量分级启动，让身体平稳过渡到低卡高蛋白饮食节奏",
-            "dish": "代表餐品 · 三文鱼藜麦沙拉 · 鸡胸时蔬 · 燕麦粥",
-            "gallery": [
-              "/uploads/plans/2026-09/kongzhi_s1_a.webp",
-              "/uploads/plans/2026-09/kongzhi_s1_b.webp"
-            ]
-          },
-          {
-            "icon": "ic-flame",
-            "n": "平台突破",
-            "t": "第 3-4 周 · 平台突破",
-            "d": "数据化复盘，调整宏量营养比例，科学突破平台期",
-            "dish": "代表餐品 · 清蒸鳕鱼 · 杂粮饭 · 牛油果",
-            "gallery": [
-              "/uploads/plans/2026-09/kongzhi_s2_a.webp",
-              "/uploads/plans/2026-09/kongzhi_s2_b.webp"
-            ]
-          },
-          {
-            "icon": "ic-shield",
-            "n": "巩固维持",
-            "t": "第 5 周起 · 巩固维持",
-            "d": "逐步恢复热量弹性，建立可持续的健康饮食习惯",
-            "dish": "代表餐品 · 香煎鸡胸 · 时蔬全麦 · 无糖酸奶",
-            "gallery": [
-              "/uploads/plans/2026-09/kongzhi_s3_a.webp",
-              "/uploads/plans/2026-09/kongzhi_s3_b.webp"
             ]
           }
-        ],
-        "enabled": true
+        ]
       },
       "chanhou": {
         "slug": "chanhou",

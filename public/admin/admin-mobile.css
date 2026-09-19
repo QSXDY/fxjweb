@@ -1,0 +1,168 @@
+﻿/* ============================================================
+ * 福鲜家后台 - 移动端自适应
+ * 断点：768px（平板）、576px（手机）
+ * ============================================================ */
+
+/* ---------- 平板（≤860px） ---------- */
+@media (width <= 860px) {
+  .sidebar {
+    display: none; width: 64px; }
+  .side-brand .side-text, .side-nav a span, .side-foot { display: none; }
+  .side-brand { justify-content: center; padding: 14px 8px; }
+  .side-nav a { justify-content: center; padding: 12px; }
+  .content { padding: 16px; }
+}
+
+/* ---------- 手机（≤576px） ---------- */
+@media (width <= 576px) {
+  body { overflow-x: hidden; }
+  /* 侧边栏改成抽屉式 */
+  .sidebar {
+    display: none;
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 260px;
+    z-index: 1000;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+    box-shadow: 2px 0 12px rgb(0 0 0 / 15%);
+  }
+  .sidebar.open { transform: translateX(0); display: flex; }
+  .side-brand .side-text, .side-nav a span, .side-foot { display: block; }
+  .side-brand { justify-content: flex-start; padding: 18px 16px; }
+  .side-nav a { justify-content: flex-start; padding: 10px 12px; }
+
+  /* 汉堡菜单按钮 */
+  .menu-toggle {
+    display: flex;
+    width: 40px;
+    height: 40px;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    background: none;
+    cursor: pointer;
+    margin-right: 12px;
+    padding: 0;
+  }
+  .menu-toggle span {
+    display: block;
+    width: 20px;
+    height: 2px;
+    background: var(--text-main);
+    position: relative;
+  }
+  .menu-toggle span::before, .menu-toggle span::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    width: 20px;
+    height: 2px;
+    background: var(--text-main);
+  }
+  .menu-toggle span::before { top: -6px; }
+  .menu-toggle span::after { top: 6px; }
+
+  /* 遮罩层 */
+  .sidebar-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgb(0 0 0 / 40%);
+    z-index: 999;
+  }
+  .sidebar-overlay.show { display: block; }
+
+  /* 顶部栏 */
+  .topbar { height: 56px; padding: 0 16px; }
+  .topbar h1 { font-size: 18px; }
+  .top-actions .btn { padding: 8px 12px; font-size: 13px; }
+
+  /* 内容区域 */
+  .content { padding: 12px; }
+
+  /* 工作台统计卡片 */
+  .stat-grid { grid-template-columns: 1fr; gap: 12px; }
+  .stat-card { padding: 20px; }
+  .stat-card .num { font-size: 28px; }
+
+  /* 列表页 */
+  .list-head { flex-direction: column; align-items: stretch; }
+  .list-head .btn { width: 100%; text-align: center; }
+
+  /* 表单 */
+  .form-grid { grid-template-columns: 1fr !important; }
+  .form-row { grid-template-columns: 1fr !important; }
+  .form-group { margin-bottom: 16px; }
+  .form-group label { margin-bottom: 6px; }
+  .form-group input, .form-group select, .form-group textarea {
+    font-size: 16px; /* 防止 iOS 自动缩放 */
+  }
+
+  /* 表格 */
+  .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  table { font-size: 12px; }
+  table th, table td { padding: 6px 2px; white-space: nowrap; text-align: center; vertical-align: middle; }
+  /* 第一列占大部分空间 */
+  .list-table th:first-child, .list-table td:first-child { text-align: center; }
+  .list-table td:first-child { white-space: normal; min-width: 90px; line-height: 1.4; }
+  /* 页面名称最多四行，后面省略号 */
+  .list-table td:first-child { max-height: 100px; overflow: hidden; }
+  .list-table td:first-child strong { display: block; text-align: center; }
+  /* 页面类型文字（套餐二级页/首页）居中显示 */
+  .list-table td:first-child .page-type { font-size: 11px; color: #2E8E97; margin-bottom: 4px; text-align: center; }
+  .list-table td:first-child strong { vertical-align: middle; display: block; text-align: center; }
+  /* 表头更新时间两行显示 */
+  .list-table th:nth-child(4) { white-space: normal; line-height: 1.2; font-size: 11px; text-align: center; }
+  /* 网址列缩短 */
+  .list-table td:nth-child(2) { max-width: 60px; overflow: hidden; text-overflow: ellipsis; font-size: 11px; }
+  /* 状态列改成呼吸灯小圆点 */
+  .list-table th:nth-child(3) { white-space: normal; line-height: 1.2; font-size: 11px; }
+  .list-table td:nth-child(3) { min-width: 25px; }
+  .list-table .badge { padding: 0; width: 8px; height: 8px; font-size: 0; position: relative; display: inline-block; vertical-align: middle; }
+  .list-table .badge-on { background: #2E8B62; animation: pulse-green 2s infinite; }
+  .list-table .badge-off { background: #ccc; }
+  @keyframes pulse-green {
+    0% { box-shadow: 0 0 0 0 rgb(46 139 98 / 60%); }
+    70% { box-shadow: 0 0 0 6px rgb(46 139 98 / 0%); }
+    100% { box-shadow: 0 0 0 0 rgb(46 139 98 / 0%); }
+  }
+  /* 更新时间列换行显示 */
+  .list-table td:nth-child(4) { white-space: normal; line-height: 1.3; font-size: 11px; min-width: 70px; }
+  /* 操作列主动改成竖排 */
+  .list-table td:last-child { min-width: 40px; }
+  .list-table td:last-child .row-actions { flex-direction: column; align-items: stretch; gap: 3px; }
+  .list-table td:last-child .btn { padding: 3px 4px; font-size: 10px; margin: 0; width: 100%; text-align: center !important; white-space: nowrap; display: block; }
+
+  /* 编辑器工具栏 */
+  .editor-toolbar { height: auto !important; flex-wrap: wrap; gap: 8px; padding: 10px; }
+  .editor-toolbar .tb-title { width: 100%; }
+  .editor-toolbar .tb-title input { max-width: 100% !important; width: 100%; }
+  .editor-toolbar .btn { padding: 6px 10px; font-size: 12px; }
+  .editor-toolbar label { font-size: 12px; }
+  .editor-shell { height: calc(100vh - 150px) !important; }
+
+  /* GrapesJS 工具栏位置调整 */
+  .gjs-pn-views { left: 10px !important; right: auto !important; }
+
+  /* 弹窗 */
+  .modal-body { padding: 20px; }
+  .modal-actions { flex-direction: column; }
+  .modal-actions .btn { width: 100%; }
+
+  /* 套餐方案编辑 */
+  .plan-admin { flex-direction: column; }
+  .plan-admin-lines { width: 100%; flex-direction: row; overflow-x: auto; }
+  .pl-line { min-width: 140px; }
+
+  /* 设置页 */
+  .tabs { overflow-x: auto; -webkit-overflow-scrolling: touch; flex-wrap: nowrap; }
+  .tab { white-space: nowrap; }
+  .sg-uploader { flex-direction: column; }
+  .sg-thumb { width: 100%; max-width: 200px; height: auto; }
+
+  /* 登录页 */
+  .login-card { width: calc(100% - 32px); max-width: 360px; }
+}

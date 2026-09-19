@@ -94,7 +94,7 @@
   .plan-hero { padding: 96px 0 56px; }
   .plan-hero-inner { grid-template-columns: 1fr; gap: 26px; }
   .plan-hero-copy h1 { font-size: 32px; }
-  .plan-hero-media { order: -1; }
+  .plan-hero-media { order: -1; max-width: 100%; overflow: hidden; }
   .plan-hero-media img, .plan-hero-ph { max-width: 100%; }
 
   /* 套餐 hero 内容整体居中（仅套餐页，不影响主页 hero） */
@@ -113,7 +113,7 @@
   /* 首屏：全屏轮播（dvh 适配手机地址栏动态伸缩） */
   .hero {
     height: 100vh;
-    height: 100dvh;
+    height: 100svh;
     min-height: 0;
   }
   .hero-arrow { display: none; }
