@@ -384,7 +384,7 @@ function renderShortPlans(shortPlans) {
     '<section class="section shortplans" id="shortplans">' +
     '<div class="container">' +
     '<div class="sec-head"><span class="eyebrow-center">SHORT-TERM</span>' +
-    '<h2 class="sec-sub">短期体验 · 给最关键的那几天</h2>' +
+    '<h2 class="sec-sub">短期体验<span class="m-sep"> · </span>给最关键的那几天</h2>' +
     '<p class="sec-lead">先体验，后升级；短期费用可全额抵扣长期套餐。</p></div>' +
     '<div class="short-grid">' + cards + '</div>' +
     '</div></section>'
@@ -434,7 +434,7 @@ function renderTiers(tiers, phone) {
     '<section class="section plans" id="plans">' +
     '<div class="container">' +
     '<div class="sec-head"><span class="eyebrow-center">PLANS</span>' +
-    '<h2 class="sec-sub">三档套餐 · 总有一档适合你</h2>' +
+    '<h2 class="sec-sub">三档套餐<span class="m-sep"> · </span>总有一档适合你</h2>' +
     '<p class="sec-lead">服务逐级升级，方案按个人体质专属定制。</p></div>' +
     '<div class="plan-grid">' + cards + '</div>' +
     '</div></section>'
@@ -494,7 +494,7 @@ function renderQuote(s, variant) {
     '<section class="' + secCls + '" id="quote">' +
     '<div class="container quote-inner">' +
     '<div class="quote-main">' +
-    '<h2 class="quote-lead">专属方案，<br>值得一次认真咨询</h2>' +
+    '<h2 class="quote-lead">专属方案<br>值得一次认真咨询</h2>' +
     '<p class="quote-sub">体质不同、需求不同，方案也因人而异。留下您的需求，营养顾问一对一为您定制。</p>' +
     '</div>' +
     '<div class="quote-actions">' +
@@ -514,8 +514,14 @@ function renderFlow() {
     { t: '每日现做', d: '开放厨房每日新鲜现做，食材公示' },
     { t: '准时送达', d: '精准时段配送，随时调整随时响应' }
   ];
+  const photos = ['/img/flow1.jpg', '/img/flow2.jpg', '/img/flow3.jpg', '/img/flow4.jpg'];
   const items = steps.map(function (st, i) {
-    return '<div class="flow-item"><span class="flow-no">' + (i + 1) + '</span><h3>' + esc(st.t) + '</h3><p>' + esc(st.d) + '</p></div>';
+    const item = '<div class="flow-item"><span class="flow-no">' + (i + 1) + '</span><h3>' + esc(st.t) + '</h3><p>' + esc(st.d) + '</p></div>';
+    if (i < 4) {
+      const photo = '<div class="flow-photo" style="background-image:url(' + photos[i] + ')"></div>';
+      return item + photo;
+    }
+    return item;
   }).join('');
   return (
     '<section class="section flow" id="flow">' +
@@ -535,19 +541,16 @@ function renderContact(s) {
     '<div class="container">' +
     '<div class="sec-head"><span class="eyebrow-center">CONTACT</span>' +
     '<h2 class="sec-sub">联系我们</h2></div>' +
-    '<div class="contact-box contact-box-plan">' +
+    '<div class="contact-box">' +
     '<div class="contact-info">' +
-    '<h2 class="contact-brand">' + esc(s.siteName) + '</h2>' +
-    '<div class="contact-list">' +
-    '<p><strong>咨询电话</strong><a href="tel:' + esc(s.phone) + '">' + esc(fmtPhone(s.phone)) + '</a></p>' +
-    '<p><strong>微信号</strong><span>' + esc(s.wechatId) + '</span></p>' +
-    '<p><strong>门店地址</strong><span>' + esc(s.address) + '</span></p>' +
-    '<p><strong>营业时间</strong><span>' + esc(s.hours) + '</span></p>' +
-    '</div>' +
-    '<div class="contact-actions">' +
-    '<a class="btn btn-gold-lg" data-action="consult" href="tel:' + esc(s.phone) + '">电话咨询</a>' +
-    '<button class="btn btn-deep" id="copyWx2"><svg viewBox="0 0 24 24"><use href="#ic-wechat" xlink:href="#ic-wechat"/></svg>复制微信号</button>' +
-    '</div>' +
+    '<h2>不方便到店？<br>线上也能快速了解方案</h2>' +
+    '<p class="contact-lead">拨打电话或添加微信，销售顾问一对一解答套餐内容、服务细节与专属调理方案。</p>' +
+    '<ul class="contact-list">' +
+    '<li><span class="c-ic"><svg viewBox="0 0 24 24"><use href="#ic-phone" xlink:href="#ic-phone"/></svg></span><p><em>咨询电话</em><a data-action="consult" href="tel:' + esc(s.phone) + '"><strong>' + esc(fmtPhone(s.phone)) + '</strong></a></p></li>' +
+    '<li><span class="c-ic"><svg viewBox="0 0 24 24"><use href="#ic-wechat" xlink:href="#ic-wechat"/></svg></span><p><em>微信号</em><span class="wx-row"><strong id="wxId">' + esc(s.wechatId) + '</strong><button id="copyWx" class="btn-copy">复制</button></span></p></li>' +
+    '<li><span class="c-ic"><svg viewBox="0 0 24 24"><use href="#ic-pin" xlink:href="#ic-pin"/></svg></span><p><em>门店地址</em><strong>' + esc(s.address) + '</strong></p></li>' +
+    '<li><span class="c-ic"><svg viewBox="0 0 24 24"><use href="#ic-clock" xlink:href="#ic-clock"/></svg></span><p><em>营业时间</em><strong>' + esc(s.hours) + '</strong></p></li>' +
+    '</ul>' +
     '</div>' +
     '<div class="contact-qr">' +
     '<img src="' + esc(qrImg) + '" alt="' + esc(s.siteName) + '微信二维码" loading="lazy">' +

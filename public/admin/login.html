@@ -8,29 +8,54 @@
 <link rel="stylesheet" href="/admin/assets/admin.css">
 </head>
 <body class="login-body">
+  <!-- 照片墙背景 -->
+  <div class="login-wall"></div>
+  <div class="login-wall-mask"></div>
+
+  <!-- 左上角 Logo -->
+  <div class="login-top-logo">
+    <div class="login-top-logo-box">FU</div>
+    <span class="login-top-name">福鲜家</span>
+  </div>
+
   <div class="login-card">
-    {{LOGIN_LOGO}}
-    <h1>福鲜家网站后台</h1>
-    <p class="sub">内容管理系统 · 登录后即可编辑网站</p>
+    <div class="login-logo-row">
+      <div class="login-logo-box">FU</div>
+      <span class="login-site-title">福鲜家</span>
+    </div>
+    <h3 class="login-form-title">管理员登录</h3>
     <div class="login-err" id="loginErr"></div>
-    <form id="loginForm">
-      <div class="field">
-        <label for="user">账号</label>
-        <input class="input" id="user" name="user" autocomplete="username" required autofocus>
+    <form id="loginForm" class="login-form">
+      <div class="login-control-group">
+        <div class="login-input-icon">
+          <i class="login-icon login-icon-user"></i>
+          <div class="login-m-wrap">
+            <input class="login-m-input" id="user" name="user" type="text" placeholder="请输入账号" autocomplete="username" required>
+          </div>
+        </div>
       </div>
-      <div class="field">
-        <label for="pass">密码</label>
-        <input class="input" id="pass" name="pass" type="password" autocomplete="current-password" required>
+      <div class="login-control-group">
+        <div class="login-input-icon">
+          <i class="login-icon login-icon-lock"></i>
+          <div class="login-m-wrap">
+            <input class="login-m-input" id="pass" name="pass" type="password" placeholder="请输入密码" autocomplete="current-password" required>
+          </div>
+        </div>
       </div>
-      <button class="btn btn-primary" type="submit" style="width:100%;justify-content:center;padding:11px;">登 录</button>
+      <button type="submit" class="login-btn login-btn-primary">登 录</button>
     </form>
-    <p style="text-align:center;font-size:12.5px;color:var(--text-sub);margin:18px 0 0;">
-      首次登录密码见服务器上 data/初始密码.txt
-    </p>
   </div>
 <script>
 (function () {
   "use strict";
+  // 获取背景图真实高度，设置 CSS 变量用于无缝滚动
+  var bg = new Image();
+  bg.onload = function () {
+    var h = (window.innerWidth * bg.height) / bg.width;
+    document.documentElement.style.setProperty('--bg-height', h + 'px');
+  };
+  bg.src = '/img/login/bj.webp';
+
   var form = document.getElementById("loginForm");
   var errBox = document.getElementById("loginErr");
   form.addEventListener("submit", function (e) {

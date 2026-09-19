@@ -9,7 +9,7 @@
   --brand-gold: #C9A96A;
   --brand-gold-dark: #B08D4F;
   --brand-fresh: #42B883;
-  --bg-white: #FFFFFF;
+  --bg-white: #FFF;
   --bg-light: #F6F8F8;
   --bg-beige: #F7F3EC;
   --text-main: #2F3A38;
@@ -20,7 +20,7 @@
 /* ---------- 编辑器画布中的占位提示 ---------- */
 .fxj-widget {
   border: 2px dashed #A9D6DC;
-  background: rgba(111, 201, 209, 0.08);
+  background: rgb(111 201 209 / 8%);
   border-radius: 10px;
   padding: 18px;
   margin: 12px 0;
@@ -62,7 +62,7 @@
 .fxj-menu-meal {
   font-size: 13px;
   color: var(--brand-primary-deep);
-  background: rgba(111, 201, 209, 0.12);
+  background: rgb(111 201 209 / 12%);
   border-radius: 999px;
   padding: 2px 10px;
 }

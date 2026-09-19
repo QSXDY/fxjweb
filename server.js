@@ -137,6 +137,7 @@ const noCache = {
 app.use('/css', express.static(path.join(ROOT, 'css'), longCache));
 app.use('/js', express.static(path.join(ROOT, 'js'), longCache));
 app.use('/assets', express.static(path.join(ROOT, 'assets'), longCache));
+app.use('/img', express.static(path.join(ROOT, 'public', 'img'), longCache));
 app.use('/uploads', express.static(path.join(ROOT, 'public', 'uploads'), longCache));
 /* 后台资源：仅放行 css/js/图片等，HTML 页面必须经登录路由渲染 */
 app.use('/admin/assets', function (req, res, next) {
