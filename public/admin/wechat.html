@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+{{FAVICON_TAG}}
+<title>微信分享 · 福鲜家后台</title>
+<meta name="csrf" content="{{CSRF}}">
+<link rel="stylesheet" href="/admin/assets/admin.css">
+<link rel="stylesheet" href="/admin/assets/admin-mobile.css">
+</head>
+<body class="admin-body">
+  {{SIDEBAR}}
+
+  <div class="main">
+    <div class="sidebar-overlay" onclick="document.querySelector('.sidebar').classList.remove('open');this.classList.remove('show')"></div>
+    <header class="topbar">
+      <button class="menu-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open');document.querySelector('.sidebar-overlay').classList.toggle('show')"><span></span></button>
+      <h1>微信分享配置</h1>
+    </header>
+
+    <div class="content">
+      <div class="card">
+        <h2>微信分享配置</h2>
+        <p class="card-desc">配置微信 JSSDK，让网页分享到微信好友/朋友圈时显示自定义卡片（标题+描述+缩略图）。</p>
+        <form id="wechatForm" class="form-grid">
+          <div class="field full">
+            <label>公众号 AppID</label>
+            <input class="input" id="wcAppId" placeholder="wx1234567890abcdef">
+          </div>
+          <div class="field full">
+            <label>公众号 AppSecret</label>
+            <input class="input" id="wcAppSecret" type="password" placeholder="请输入 AppSecret">
+          </div>
+          <div class="field full">
+            <label>分享标题</label>
+            <input class="input" id="wcTitle" placeholder="福鲜家营养餐">
+          </div>
+          <div class="field full">
+            <label>分享描述</label>
+            <input class="input" id="wcDesc" placeholder="月子餐·定制配送">
+          </div>
+          <div class="field full">
+            <label>分享缩略图</label>
+            <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;">
+              <img id="wcImgPrev" alt="" style="width:120px;height:120px;object-fit:cover;border:1px solid var(--line);border-radius:10px;background:#fff;display:none;">
+              <button type="button" class="btn btn-sm" id="wcImgPick">上传缩略图</button>
+              <button type="button" class="btn btn-sm btn-danger" id="wcImgClear" style="display:none;">移除</button>
+              <span style="font-size:12.5px;color:var(--text-sub);">建议 300×300 以上，JPG/PNG</span>
+            </div>
+            <input type="hidden" id="wcImgUrl">
+            <input type="file" id="wcImgFile" accept=".png,.jpg,.jpeg,.webp" style="display:none;">
+          </div>
+          <div class="field full">
+            <button type="submit" class="btn btn-primary">保存配置</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+<script src="/admin/assets/admin.js"></script>
+<script>
+(function () {
+  "use strict";
+  var A = window.Admin;
+  A.setActiveNav("wechat");
+
+  /* 加载配置 */
+  A.get("/admin/api/wechat").then(function (d) {
+    if (d.appId) document.getElementById("wcAppId").value = d.appId;
+    if (d.appSecret) document.getElementById("wcAppSecret").value = d.appSecret;
+    if (d.title) document.getElementById("wcTitle").value = d.title;
+    if (d.desc) document.getElementById("wcDesc").value = d.desc;
+    if (d.img) {
+      document.getElementById("wcImgUrl").value = d.img;
+      document.getElementById("wcImgPrev").src = d.img;
+      document.getElementById("wcImgPrev").style.display = "block";
+      document.getElementById("wcImgClear").style.display = "inline-block";
+    }
+  }).catch(A.toastErr);
+
+  /* 缩略图上传 */
+  document.getElementById("wcImgPick").onclick = function () {
+    document.getElementById("wcImgFile").click();
+  };
+  document.getElementById("wcImgFile").onchange = function (e) {
+    var file = e.target.files[0];
+    if (!file) return;
+    var fd = new FormData();
+    fd.append("file", file);
+    fd.append("category", "general");
+    fetch("/admin/api/upload", {
+      method: "POST",
+      headers: { "X-CSRF-Token": document.querySelector('meta[name="csrf"]').getAttribute("content") },
+      body: fd
+    }).then(function (r) { return r.json(); }).then(function (d) {
+      if (!d.ok) throw new Error(d.error || "上传失败");
+      document.getElementById("wcImgUrl").value = d.url;
+      document.getElementById("wcImgPrev").src = d.url;
+      document.getElementById("wcImgPrev").style.display = "block";
+      document.getElementById("wcImgClear").style.display = "inline-block";
+      A.toast("上传成功");
+    }).catch(function (err) { A.toastErr(err.message); });
+    e.target.value = "";
+  };
+  document.getElementById("wcImgClear").onclick = function () {
+    document.getElementById("wcImgUrl").value = "";
+    document.getElementById("wcImgPrev").style.display = "none";
+    this.style.display = "none";
+  };
+
+  /* 保存 */
+  document.getElementById("wechatForm").onsubmit = function (e) {
+    e.preventDefault();
+    A.post("/admin/api/wechat", {
+      appId: document.getElementById("wcAppId").value.trim(),
+      appSecret: document.getElementById("wcAppSecret").value.trim(),
+      title: document.getElementById("wcTitle").value.trim(),
+      desc: document.getElementById("wcDesc").value.trim(),
+      img: document.getElementById("wcImgUrl").value
+    }).then(function () {
+      A.toast("保存成功");
+    }).catch(A.toastErr);
+  };
+})();
+</script>
+</body>
+</html>

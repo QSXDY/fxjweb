@@ -149,6 +149,12 @@ app.use('/admin/assets', function (req, res, next) {
 function adminPage(name, tokens) {
   const file = path.join(ROOT, 'public', 'admin', name);
   let html = fs.readFileSync(file, 'utf8');
+  /* 侧边栏公共组件：从 sidebar.html 加载，替换 {{SIDEBAR}} 占位符 */
+  const sidebarFile = path.join(ROOT, 'public', 'admin', 'sidebar.html');
+  let sidebarHtml = '';
+  if (fs.existsSync(sidebarFile)) {
+    sidebarHtml = fs.readFileSync(sidebarFile, 'utf8');
+  }
   /* 站点 LOGO / Favicon 受后台「站点设置」控制：登录页与侧边栏 LOGO 同步跟随 */
   const s = store.load().settings || {};
   const logoUrl = String(s.logoUrl || '').trim();
@@ -168,8 +174,15 @@ function adminPage(name, tokens) {
       : '<span class="side-logo">福</span>',
     FAVICON_TAG: favUrl
       ? '<link rel="icon" href="' + escHtml(favUrl) + (favUrl.toLowerCase().endsWith('.svg') ? '" type="image/svg+xml">' : '">')
-      : ''
+      : '',
+    SIDEBAR: sidebarHtml
   }, tokens || {});
+  /* 先替换 sidebar.html 里的占位符（如 {{SIDE_LOGO}}） */
+  Object.keys(all).forEach(function (k) {
+    sidebarHtml = sidebarHtml.split('{{' + k + '}}').join(String(all[k]));
+  });
+  all.SIDEBAR = sidebarHtml;
+  /* 再替换 HTML 里的占位符 */
   Object.keys(all).forEach(function (k) {
     html = html.split('{{' + k + '}}').join(String(all[k]));
   });
@@ -208,6 +221,9 @@ app.get('/admin/pages', auth.requireAdmin, function (req, res) {
 });
 app.get('/admin/entries', auth.requireAdmin, function (req, res) {
   res.set('Cache-Control', 'no-store').send(adminPage('entries.html', { CSRF: req.session.csrf }));
+});
+app.get('/admin/wechat', auth.requireAdmin, function (req, res) {
+  res.set('Cache-Control', 'no-store').send(adminPage('wechat.html', { CSRF: req.session.csrf }));
 });
 app.get('/admin/settings', auth.requireAdmin, function (req, res) {
   res.set('Cache-Control', 'no-store').send(adminPage('settings.html', { CSRF: req.session.csrf }));
@@ -514,6 +530,95 @@ app.post('/admin/api/settings', auth.requireAdmin, auth.requireCsrf, function (r
 });
 
 /* 套餐二级页：实时预览（不落库，直接用表单数据渲染） */
+
+/* ===== 微信分享 API ===== */
+app.get('/admin/api/wechat', auth.requireAdmin, function (req, res) {
+  const d = store.load();
+  apiOk(res, d.wechat || {});
+});
+app.post('/admin/api/wechat', auth.requireAdmin, auth.requireCsrf, function (req, res) {
+  store.mutate(function (d) {
+    d.wechat = {
+      appId: String(req.body.appId || '').trim(),
+      appSecret: String(req.body.appSecret || '').trim(),
+      title: String(req.body.title || '').trim(),
+      desc: String(req.body.desc || '').trim(),
+      img: String(req.body.img || '').trim()
+    };
+  });
+  apiOk(res, { ok: true });
+});
+
+/* ===== 微信 JSSDK 签名接口（前台调用） ===== */
+const https = require('https');
+/* access_token / jsapi_ticket 缓存：按 appId 隔离，配置变更后自动失效 */
+let wxTokenCache = {};   // appId -> { token, expire }
+let wxTicketCache = {};  // appId -> { ticket, expire }
+
+function httpsGet(url) {
+  return new Promise(function (resolve, reject) {
+    https.get(url, function (res) {
+      let data = '';
+      res.on('data', function (chunk) { data += chunk; });
+      res.on('end', function () {
+        try { resolve(JSON.parse(data)); }
+        catch (e) { reject(new Error('解析失败')); }
+      });
+    }).on('error', reject);
+  });
+}
+
+async function getWxAccessToken(appId, appSecret) {
+  const now = Date.now();
+  const cached = wxTokenCache[appId];
+  if (cached && cached.expire > now) return cached.token;
+  const url = 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=' + appId + '&secret=' + appSecret;
+  const data = await httpsGet(url);
+  if (data.errcode) throw new Error(data.errmsg || '获取 access_token 失败');
+  wxTokenCache[appId] = { token: data.access_token, expire: now + (data.expires_in - 300) * 1000 };
+  return data.access_token;
+}
+
+async function getWxTicket(appId, accessToken) {
+  const now = Date.now();
+  const cached = wxTicketCache[appId];
+  if (cached && cached.expire > now) return cached.ticket;
+  const url = 'https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token=' + accessToken + '&type=jsapi';
+  const data = await httpsGet(url);
+  if (data.errcode) throw new Error(data.errmsg || '获取 ticket 失败');
+  wxTicketCache[appId] = { ticket: data.ticket, expire: now + (data.expires_in - 300) * 1000 };
+  return data.ticket;
+}
+
+app.get('/api/wechat/sign', async function (req, res) {
+  try {
+    const d = store.load();
+    const wc = d.wechat || {};
+    if (!wc.appId || !wc.appSecret) {
+      return res.json({ ok: false, error: '未配置微信分享' });
+    }
+    const url = req.query.url || '';
+    const accessToken = await getWxAccessToken(wc.appId, wc.appSecret);
+    const ticket = await getWxTicket(wc.appId, accessToken);
+    const nonceStr = Math.random().toString(36).substring(2, 15);
+    const timestamp = Math.floor(Date.now() / 1000);
+    const string1 = 'jsapi_ticket=' + ticket + '&noncestr=' + nonceStr + '&timestamp=' + timestamp + '&url=' + url;
+    const signature = require('crypto').createHash('sha1').update(string1).digest('hex');
+    res.json({
+      ok: true,
+      appId: wc.appId,
+      timestamp: timestamp,
+      nonceStr: nonceStr,
+      signature: signature,
+      title: wc.title || '',
+      desc: wc.desc || '',
+      img: wc.img || ''
+    });
+  } catch (e) {
+    res.json({ ok: false, error: e.message });
+  }
+});
+
 app.post('/admin/api/plan-preview', auth.requireAdmin, auth.requireCsrf, function (req, res) {
   const line = req.body.line;
   if (!line || typeof line !== 'object') return apiErr(res, 400, '缺少套餐数据');
@@ -725,6 +830,16 @@ function listUploads() {
 app.get('/admin/api/uploads', auth.requireAdmin, function (req, res) {
   const r = listUploads();
   apiOk(res, { assets: r.assets, groups: r.groups });
+});
+
+/* 微信 JS 接口安全域名校验文件（MP_verify_*.txt）
+ * 文件放 dist 卷根目录（挂载卷，不随镜像重建丢失），供微信后台校验域名归属；
+ * 只放行固定前缀文件，path.basename 防止目录穿越 */
+app.get(/^\/MP_verify_[A-Za-z0-9_-]{4,64}\.txt$/, function (req, res) {
+  const name = path.basename(req.path);
+  const f = path.join(ROOT, 'dist', name);
+  if (!fs.existsSync(f)) return res.status(404).send('not found');
+  res.type('text/plain').send(fs.readFileSync(f, 'utf8'));
 });
 
 /* ---------- 前台 ---------- */

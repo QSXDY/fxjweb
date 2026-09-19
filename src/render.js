@@ -655,7 +655,8 @@ function renderPage(page) {
     (page.needs_home_js
       ? '<script src="/js/script.js?v=' + ASSET_REV + '" defer></script>'
       : '') +
-    '\n<script src="/js/layout.js?v=' + ASSET_REV + '" defer></script>';
+    '\n<script src="/js/layout.js?v=' + ASSET_REV + '" defer></script>' +
+    '\n<script src="/js/wechat-share.js?v=' + ASSET_REV + '" defer></script>';
 
   const fonts = FONTS.map(function (f) { return '<link rel="stylesheet" href="' + f + '">'; }).join('\n');
 
