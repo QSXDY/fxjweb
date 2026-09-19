@@ -29,6 +29,7 @@ COPY --from=build /app/src ./src
 COPY --from=build /app/css ./css
 COPY --from=build /app/js ./js
 COPY --from=build /app/public/admin ./public/admin
+COPY --from=build /app/public/img ./public/img
 COPY --from=build /app/index.html ./index.html
 
 # 首次启动模板：数据快照 / dist 成品 / 上传图片
