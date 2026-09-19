@@ -4,7 +4,7 @@
  * ============================================================ */
 
 /* ---------- 平板（≤860px） ---------- */
-@media (width <= 860px) {
+@media (max-width: 860px) {
   .sidebar {
     display: none; width: 64px; }
   .side-brand .side-text, .side-nav a span, .side-foot { display: none; }
@@ -14,7 +14,7 @@
 }
 
 /* ---------- 手机（≤576px） ---------- */
-@media (width <= 576px) {
+@media (max-width: 576px) {
   body { overflow-x: hidden; }
   /* 侧边栏改成抽屉式 */
   .sidebar {

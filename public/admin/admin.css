@@ -219,7 +219,7 @@ a:hover { text-decoration: underline; }
 .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0 16px; }
 .form-grid .full { grid-column: 1 / -1; }
 
-@media (width <= 760px) { .form-grid { grid-template-columns: 1fr; } }
+@media (max-width: 760px) { .form-grid { grid-template-columns: 1fr; } }
 
 /* 表格 */
 .table-wrap { overflow-x: auto; }
@@ -563,7 +563,7 @@ table.list-table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
 .empty-hint { text-align: center; padding: 60px 20px; color: var(--text-sub); }
 .list-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 16px; flex-wrap: wrap; }
 
-@media (width <= 860px) {
+@media (max-width: 860px) {
   .sidebar { width: 64px; }
   .side-brand .side-text, .side-nav a span, .side-foot { display: none; }
   .side-brand { justify-content: center; padding: 14px 8px; }
@@ -668,7 +668,7 @@ table.list-table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
 }
 .sg-uploader { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }.plan-admin-preview { margin-top: 16px; }
 
-@media (width <= 900px) {
+@media (max-width: 900px) {
   .plan-admin { flex-direction: column; }
   .plan-admin-lines { width: 100%; flex-flow: row wrap; }
   .pl-line { width: auto; }

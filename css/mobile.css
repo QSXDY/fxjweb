@@ -8,7 +8,7 @@
  * ============================================================ */
 
 /* ---------- 平板（≤768px） ---------- */
-@media (width <= 768px) {
+@media (max-width: 768px) {
   /* 首页业务区 / 调理流程：由多列收紧为 3 列 */
   .biz-grid { grid-template-columns: repeat(3, 1fr); }
   .flow-list { grid-template-columns: repeat(3, 1fr); row-gap: 30px; }
@@ -107,7 +107,7 @@
 }
 
 /* ---------- 手机（≤576px） ---------- */
-@media (width <= 576px) {
+@media (max-width: 576px) {
   :root { --nav-h: 64px; }
 
   /* 首屏：全屏轮播（dvh 适配手机地址栏动态伸缩） */
