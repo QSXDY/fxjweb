@@ -1,9 +1,9 @@
 # ============================================================
 # 福鲜家 CMS · 多阶段构建
 # 阶段1 build：pnpm 安装生产依赖 + 生成 dist 静态成品
-# 阶段2 runtime：只保留运行时文件（node:26-alpine，最终镜像约 100MB）
+# 阶段2 runtime：只保留运行时文件（node:26.12.1-alpine，最终镜像约 330MB）
 # ============================================================
-FROM node:26-alpine AS build
+FROM node:26.12.1-alpine AS build
 WORKDIR /app
 
 # Node 26 镜像不再自带 corepack，用 npm 只负责引导安装 pnpm 本身
@@ -18,7 +18,7 @@ COPY . .
 RUN node src/build.js
 
 # ---------- 运行阶段 ----------
-FROM node:26-alpine
+FROM node:26.12.1-alpine
 WORKDIR /app
 
 ENV NODE_ENV=production
