@@ -16,7 +16,7 @@
 双击 **`启动.bat`**，或手动执行：
 
 ```bash
-npm install --omit=dev   # 首次运行才需要
+pnpm install --prod   # 首次运行才需要
 node server.js
 ```
 
@@ -33,7 +33,7 @@ node server.js
 
 1. 打开 `http://localhost:3000/admin`（服务器为 `https://你的域名/admin`）；
 2. 账号：**ztfxj**；
-3. 初始密码：**yfl2132995**（本地交付包内也有 `data/初始密码.txt` 备忘；**登录后请立即在「站点设置 → 修改密码」中改掉**）。
+3. 初始密码：见交付包内 `data/初始密码.txt`（**登录后请立即在「站点设置 → 修改密码」中改掉**）。
 
 ## 三、日常操作速查
 
@@ -94,7 +94,7 @@ docker compose up -d
 ```
 容器启动后：`fxjweb` 运行于 **1panel-network** 网络，端口 **3004**（**不映射公网**，仅内网可访问）。
 
-> 换新版本：只需修改 `docker-compose.yml` 里的镜像 tag（如 `v1.1.0` → `v1.2.0`），再 `docker compose pull && docker compose up -d` 即可升级。
+> 换新版本：只需修改 `docker-compose.yml` 里的镜像 tag（如 `v2.3.1` → `v2.3.2`），再 `docker compose pull && docker compose up -d` 即可升级。
 
 ### 4. 在 1Panel 创建网站（OpenResty 承担前台）
 1Panel → **网站 → 网站** → 创建网站 → 静态网站 → 填入域名；
@@ -154,12 +154,12 @@ location /admin/api/ {
 代码推送到 GitHub 后，**打标签即自动构建镜像**，服务器拉取即可升级：
 
 ```bash
-git tag v1.1.0        # 按需递增版本号
-git push origin v1.1.0
+git tag v2.3.2        # 按需递增版本号
+git push origin v2.3.2
 ```
 
 - 触发 `.github/workflows/docker-image.yml`，自动构建并推送：
-  `<你的DockerHub用户名>/fxjweb:v1.1.0` 与 `...:latest`；
+  `<你的DockerHub用户名>/fxjweb:v2.3.2` 与 `...:latest`；
 - **首次使用需在 GitHub 仓库配置两个 Secrets**（Settings → Secrets and variables → Actions）：
   - `DOCKERHUB_USERNAME`：DockerHub 用户名（本项目为 **cnqsxdy**）；
   - `DOCKERHUB_TOKEN`：DockerHub **Access Token**（账号设置 → Security → Access Tokens 创建，不是登录密码）；
@@ -171,7 +171,7 @@ git push origin v1.1.0
 ## 五、部署到云服务器（备选：PM2 直跑，不用 Docker）
 
 ### 1. 服务器准备
-- 安装 Node.js 18+（推荐 20/22 LTS）与 PM2：`npm install -g pm2`。
+- 安装 Node.js >24（当前镜像使用 26）与 PM2：`pnpm add -g pm2`。
 
 ### 2. 上传项目
 上传到 `/opt/fuxianjia/`（除 `node_modules`、`data/site.json` 外的全部文件）。
@@ -179,7 +179,7 @@ git push origin v1.1.0
 ### 3. 安装依赖并启动
 ```bash
 cd /opt/fuxianjia
-npm install --omit=dev
+pnpm install --prod
 PORT=3004 pm2 start server.js --name fuxianjia
 pm2 save && pm2 startup   # 开机自启（按提示执行，重启服务器后自动拉起，无需手动）
 ```

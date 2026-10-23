@@ -1,6 +1,6 @@
 # ============================================================
 # 福鲜家 CMS · 自动构建推送到 DockerHub
-# 触发方式：推送任意 v* 标签（如 git tag v1.1.0 && git push origin v1.1.0）
+# 触发方式：推送任意 v* 标签（如 git tag v2.3.2 && git push origin v2.3.2）
 # 产物：<DockerHub用户名>/fxjweb:<tag> 与 <DockerHub用户名>/fxjweb:latest
 # 前置：仓库 Settings → Secrets and variables → Actions 配置
 #   DOCKERHUB_USERNAME（DockerHub 用户名）

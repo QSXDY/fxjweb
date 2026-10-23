@@ -11,6 +11,12 @@ dist/
 
 # 敏感：初始密码明文（data/site.json 保留，镜像首启模板必需）
 data/初始密码.txt
+_data_site_backup_*.json
+_backup_*/
+.env
+
+# pnpm
+pnpm-debug.log*
 
 # 系统文件
 .DS_Store

@@ -7,3 +7,9 @@ dist
 README.md
 scripts
 data/初始密码.txt
+.env
+_data_site_backup_*.json
+_backup_*
+.shots
+login-ref.jpg
+_parsed_plans.txt

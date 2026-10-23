@@ -1,21 +1,24 @@
 # ============================================================
 # 福鲜家 CMS · 多阶段构建
-# 阶段1 build：安装生产依赖 + 生成 dist 静态成品
-# 阶段2 runtime：只保留运行时文件（node:24-alpine，最终镜像约 100MB）
+# 阶段1 build：pnpm 安装生产依赖 + 生成 dist 静态成品
+# 阶段2 runtime：只保留运行时文件（node:26-alpine，最终镜像约 100MB）
 # ============================================================
-FROM node:24-alpine AS build
+FROM node:26-alpine AS build
 WORKDIR /app
 
+# Node 26 镜像不再自带 corepack，用 npm 只负责引导安装 pnpm 本身
+RUN npm install -g pnpm@12.8.1 --no-fund --no-audit
+
 # 先拷依赖清单，利用镜像层缓存
-COPY package.json package-lock.json ./
-RUN npm ci --omit=dev
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+RUN pnpm install --prod --frozen-lockfile
 
 # 拷源码并生成 dist 静态成品（页面/404/css/js）
 COPY . .
 RUN node src/build.js
 
 # ---------- 运行阶段 ----------
-FROM node:24-alpine
+FROM node:26-alpine
 WORKDIR /app
 
 ENV NODE_ENV=production
