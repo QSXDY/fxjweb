@@ -9,7 +9,7 @@
 services:
   fxjweb:
     # 远程镜像（DockerHub 用户名 cnqsxdy），拉取即用，无需本地构建
-    image: cnqsxdy/fxjweb:v2.3.2
+    image: cnqsxdy/fxjweb:v2.3.5
     container_name: fxjweb
     restart: unless-stopped
     environment:

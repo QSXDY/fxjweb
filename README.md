@@ -94,7 +94,7 @@ docker compose up -d
 ```
 容器启动后：`fxjweb` 运行于 **1panel-network** 网络，端口 **3004**（**不映射公网**，仅内网可访问）。
 
-> 换新版本：只需修改 `docker-compose.yml` 里的镜像 tag（如 `v2.3.1` → `v2.3.2`），再 `docker compose pull && docker compose up -d` 即可升级。
+> 换新版本：只需修改 `docker-compose.yml` 里的镜像 tag（如 `v2.3.4` → `v2.3.5`），再 `docker compose pull && docker compose up -d` 即可升级。
 
 ### 4. 在 1Panel 创建网站（OpenResty 承担前台）
 1Panel → **网站 → 网站** → 创建网站 → 静态网站 → 填入域名；
@@ -154,12 +154,12 @@ location /admin/api/ {
 代码推送到 GitHub 后，**打标签即自动构建镜像**，服务器拉取即可升级：
 
 ```bash
-git tag v2.3.2        # 按需递增版本号
-git push origin v2.3.2
+git tag v2.3.5        # 按需递增版本号
+git push origin v2.3.5
 ```
 
 - 触发 `.github/workflows/docker-image.yml`，自动构建并推送：
-  `<你的DockerHub用户名>/fxjweb:v2.3.2` 与 `...:latest`；
+  `<你的DockerHub用户名>/fxjweb:v2.3.5` 与 `...:latest`；
 - **首次使用需在 GitHub 仓库配置两个 Secrets**（Settings → Secrets and variables → Actions）：
   - `DOCKERHUB_USERNAME`：DockerHub 用户名（本项目为 **cnqsxdy**）；
   - `DOCKERHUB_TOKEN`：DockerHub **Access Token**（账号设置 → Security → Access Tokens 创建，不是登录密码）；
