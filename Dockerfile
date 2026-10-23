@@ -1,7 +1,7 @@
 # ============================================================
 # 福鲜家 CMS · 多阶段构建
 # 阶段1 build：pnpm 安装生产依赖 + 生成 dist 静态成品
-# 阶段2 runtime：只保留运行时文件（node:26.12.1-alpine，最终镜像约 330MB）
+# 阶段2 runtime：纯净 Alpine + 只拷 node 二进制（最终镜像约 297MB）
 # ============================================================
 FROM node:26.12.1-alpine AS build
 WORKDIR /app
@@ -18,8 +18,14 @@ COPY . .
 RUN node src/build.js
 
 # ---------- 运行阶段 ----------
-FROM node:26.12.1-alpine
+# 不带 npm/npx 与 Node 头文件，只拷官方镜像里的 node 二进制（省约 36MB）
+FROM alpine:3.24.3
 WORKDIR /app
+
+# Node 运行所需的最小系统库；新增依赖时在本行补充
+RUN apk add --no-cache libstdc++ libatomic ca-certificates
+
+COPY --from=build /usr/local/bin/node /usr/local/bin/node
 
 ENV NODE_ENV=production
 ENV PORT=3004
